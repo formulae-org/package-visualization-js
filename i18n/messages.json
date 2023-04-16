@@ -1,0 +1,80 @@
+{
+	"pathVisualization" : "Visualization",
+
+	"nameCrossedOut"  : "Crossed out",
+	"childCrossedOut" : "Expression to crossed out",
+	"leafCrossedOut"  : "Crossed out",
+
+	"nameMetrics"  : "Metrics",
+	"childMetrics" : "Expression to show its metrics",
+	"leafMetrics"  : "Metrics",
+
+	"nameRectangle" : "An invisible rectangle",
+
+	"mnemonicCreateRectangle" : "CreateRectangle",
+	"nameCreateRectangle"     : "Create rectangle",
+	"childrenCreateRectangle" : [ "Width", "Height", "Horizontal baseline", "Vertical baseline" ],
+	"leafCreateRectangle"     : "Create rectangle",
+
+	"nameColor"   : "Color",
+	"leafColor"   : "Set color",
+	"actionColor" : "Set color ...",
+
+	"nameBold"   : "Bold",
+	"leafBold"   : "Set bold",
+	"actionBold" : "Set bold ...",
+
+	"nameItalic"   : "Italic",
+	"leafItalic"   : "Set italic",
+	"actionItalic" : "Set italic ...",
+
+	"nameFontSize"        : "Font size",
+	"messageFontSize"     : "Select font size",
+	"messageSizeFontSize" : "Font size",
+	"leafFontSize"        : "Set font size",
+	"actionFontSize"      : "Set font size ...",
+
+	"nameFontSizeIncrement"             : "Font size increment",
+	"messageFontSizeIncrement"          : "Select font size increment",
+	"messageIncrementFontSizeIncrement" : "Increment",
+	"leafFontSizeIncrement"             : "Set font size increment",
+	"actionFontSizeIncrement"           : "Set font size increment ...",
+
+	"nameFontName"    : "Font name",
+	"messageFontName" : "Set font name",
+	"leafFontName"    : "Set font name",
+	"actionFontName"  : "Set font name ...",
+
+	"pathReflection" : "Visualization.Reflection",
+
+	"mnemonicSetColor" : "SetColor",
+	"nameSetColor"     : "Set color",
+	"childrenSetColor" : [ "Expression", "Color" ],
+	"leafSetColor"     : "Programatically set color",
+
+	"mnemonicSetBold" : "SetBold",
+	"nameSetBold"     : "Set bold",
+	"childrenSetBold" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
+	"leafSetBold"     : "Programatically set bold",
+
+	"mnemonicSetItalic" : "SetItalic",
+	"nameSetItalic"     : "Set italic",
+	"childrenSetItalic" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
+	"leafSetItalic"     : "Programatically set italic",
+
+	"mnemonicSetFontSize" : "SetFontSize",
+	"nameSetFontSize"     : "Set font size",
+	"childrenSetFontSize" : [ "Expression", "Font size" ],
+	"leafSetFontSize"     : "Programatically set font size",
+
+	"mnemonicSetFontSizeIncrement" : "SetFontSizeIncrement",
+	"nameSetFontSizeIncrement"     : "Set font size increment",
+	"childrenSetFontSizeIncrement" : [ "Expression", "Font size increment" ],
+	"leafSetFontSizeIncrement"     : "Programatically set font size increment",
+
+	"mnemonicSetFontName" : "SetFontName",
+	"nameSetFontName"     : "Set font name",
+	"childrenSetFontName" : [ "Expression", "Font name" ],
+	"leafSetFontName"     : "Programatically set font name"
+}
+

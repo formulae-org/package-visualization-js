@@ -1,0 +1,80 @@
+{
+	"pathVisualization" : "Visualización",
+
+	"nameCrossedOut"  : "Tachado",
+	"childCrossedOut" : "Expresión a tachar",
+	"leafCrossedOut"  : "Tachado",
+
+	"nameMetrics"  : "Métricas",
+	"childMetrics" : "Expresión a mostrar su métricas",
+	"leafMetrics"  : "Métricas",
+
+	"nameRectangle" : "Un rectángulo invisible",
+
+	"mnemonicCreateRectangle" : "CrearRectángulo",
+	"nameCreateRectangle"     : "Crear rectángulo",
+	"childrenCreateRectangle" : [ "Ancho", "Alto", "Línea base horizontal", "Línea base vertical" ],
+	"leafCreateRectangle"     : "Crear rectángulo",
+
+	"nameColor"   : "Color",
+	"leafColor"   : "Fijar color",
+	"actionColor" : "Fijar color ...",
+
+	"nameBold"   : "Negrita",
+	"leafBold"   : "Fijar negrita",
+	"actionBold" : "Fijar negrita ...",
+
+	"nameItalic"   : "Itálica",
+	"leafItalic"   : "Fijar itálica",
+	"actionItalic" : "Fijar itálica ...",
+
+	"nameFontSize"        : "Tamaño de fuente",
+	"messageFontSize"     : "Seleccione tamaño de fuente",
+	"messageSizeFontSize" : "Tamaño de fuente",
+	"leafFontSize"        : "Fijar tamaño de fuente",
+	"actionFontSize"      : "Fijar tamaño de fuente ...",
+
+	"nameFontSizeIncrement"             : "Incremento en tamaño de fuente",
+	"messageFontSizeIncrement"          : "Seleccione incremento en tamaño de fuente",
+	"messageIncrementFontSizeIncrement" : "Incremento",
+	"leafFontSizeIncrement"             : "Fijar incremento en tamaño de fuente",
+	"actionFontSizeIncrement"           : "Fijar incremento en tamaño de fuente ...",
+
+	"nameFontName"    : "Nombre de fuente",
+	"messageFontName" : "Fijar nombre de fuente",
+	"leafFontName"    : "Fijar nombre de fuente",
+	"actionFontName"  : "Fijar nombre de fuente ...",
+
+	"pathReflection" : "Visualización.Reflexión",
+
+	"mnemonicSetColor" : "FijarColor",
+	"nameSetColor"     : "Fijar color",
+	"childrenSetColor" : [ "Expresión", "Color" ],
+	"leafSetColor"     : "Programáticamente fijar color",
+
+	"mnemonicSetBold" : "FijarNegrita",
+	"nameSetBold"     : "Fijar negrita",
+	"childrenSetBold" : [ "Expresión", "Valor a ser fijado", "Bandaera a indicar si la operación es fijar o voltear" ],
+	"leafSetBold"     : "Programáticamente fijar negrita",
+
+	"mnemonicSetItalic" : "FijarItálica",
+	"nameSetItalic"     : "Fijar itálica",
+	"childrenSetItalic" : [ "Expresión", "Valor a ser fijado", "Bandaera a indicar si la operación es fijar o voltear" ],
+	"leafSetItalic"     : "Programáticamente fijar itálica",
+
+	"mnemonicSetFontSize" : "FijarTamañoFuente",
+	"nameSetFontSize"     : "Fijar tamaño de fuente",
+	"childrenSetFontSize" : [ "Expresión", "Tamaño de fuente" ],
+	"leafSetFontSize"     : "Programáticamente fjar tamaño de fuente",
+
+	"mnemonicSetFontSizeIncrement" : "FijarIncrementoTamañoFuente",
+	"nameSetFontSizeIncrement"     : "Fijar incremento en tamaño de fuente",
+	"childrenSetFontSizeIncrement" : [ "Expresión", "Incremento en tamaño de fuente" ],
+	"leafSetFontSizeIncrement"     : "Programáticamente fijar incremento en tamaño de fuente",
+
+	"mnemonicSetFontName" : "FijarNombreFuente",
+	"nameSetFontName"     : "Fijar nombre de fuente",
+	"childrenSetFontName" : [ "Expresión", "Nombre de fuente" ],
+	"leafSetFontName"     : "Programáticamente fijar nombre de fuente"
+}
+
