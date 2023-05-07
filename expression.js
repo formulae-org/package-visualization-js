@@ -271,16 +271,16 @@ Visualization.Color = class extends Expression.UnaryExpression {
 	}
 	
 	setSerializationStrings(strings, promises) {
-		let f = parseFloat(strings[0]); if (f == NaN) throw "Invalid number: " + strings[0];
+		let f = parseFloat(strings[0]); if (isNaN(f)) throw "Invalid number: " + strings[0];
 		this.set("Red", f);
 
-		f = parseFloat(strings[1]); if (f == NaN) throw "Invalid number: " + strings[1];
+		f = parseFloat(strings[1]); if (isNaN(f)) throw "Invalid number: " + strings[1];
 		this.set("Green", f);
 
-		f = parseFloat(strings[2]); if (f == NaN) throw "Invalid number: " + strings[2];
+		f = parseFloat(strings[2]); if (isNaN(f)) throw "Invalid number: " + strings[2];
 		this.set("Blue", f);
 
-		f = parseFloat(strings[3]); if (f == NaN) throw "Invalid number: " + strings[3];
+		f = parseFloat(strings[3]); if (isNaN(f)) throw "Invalid number: " + strings[3];
 		this.set("Alpha", f);
 	}
 	
@@ -509,7 +509,7 @@ Visualization.FontSize = class extends Expression.UnaryExpression {
 	}
 	
 	setSerializationStrings(strings, promises) {
-		let f = parseFloat(strings[0]); if (f == NaN) throw "Invalid number: " + strings[0];
+		let f = parseFloat(strings[0]); if (isNaN(f)) throw "Invalid number: " + strings[0];
 		this.set("Size", f);
 	}
 	
@@ -570,7 +570,7 @@ Visualization.FontSizeIncrement = class extends Expression.UnaryExpression {
 	}
 	
 	setSerializationStrings(strings, promises) {
-		let f = parseFloat(strings[0]); if (f == NaN) throw "Invalid number: " + strings[0];
+		let f = parseFloat(strings[0]); if (isNaN(f)) throw "Invalid number: " + strings[0];
 		this.set("Increment", f);
 	}
 	
