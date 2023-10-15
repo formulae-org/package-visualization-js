@@ -161,11 +161,11 @@ Visualization.setFontName = async (setFontName, session) => {
 };
 
 Visualization.setReducers = () => {
-	ReductionManager.addReducer("Visualization.CreateRectangle",      Visualization.createRectangle);
-	ReductionManager.addReducer("Visualization.SetColor",             Visualization.setColor);
-	ReductionManager.addReducer("Visualization.SetBold",              Visualization.setBoldItalic);
-	ReductionManager.addReducer("Visualization.SetItalic",            Visualization.setBoldItalic);
-	ReductionManager.addReducer("Visualization.SetFontSize",          Visualization.setFontSizeAndIncrement);
-	ReductionManager.addReducer("Visualization.SetFontSizeIncrement", Visualization.setFontSizeAndIncrement);
-	ReductionManager.addReducer("Visualization.SetFontName",          Visualization.setFontName);
+	ReductionManager.addReducer("Visualization.CreateRectangle",      Visualization.createRectangle,         "Visualization.createRectangle");
+	ReductionManager.addReducer("Visualization.SetColor",             Visualization.setColor,                "Visualization.setColor");
+	ReductionManager.addReducer("Visualization.SetBold",              Visualization.setBoldItalic,           "Visualization.setBoldItalic");
+	ReductionManager.addReducer("Visualization.SetItalic",            Visualization.setBoldItalic,           "Visualization.setBoldItalic");
+	ReductionManager.addReducer("Visualization.SetFontSize",          Visualization.setFontSizeAndIncrement, "Visualization.setFontSizeAndIncrement");
+	ReductionManager.addReducer("Visualization.SetFontSizeIncrement", Visualization.setFontSizeAndIncrement, "Visualization.setFontSizeAndIncrement");
+	ReductionManager.addReducer("Visualization.SetFontName",          Visualization.setFontName,             "Visualization.setFontName");
 };
