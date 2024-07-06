@@ -116,19 +116,19 @@ Visualization.Rectangle = class extends Expression.NullaryExpression {
 		}
 	}
 	
+	getSerializationNames() {
+		return [ "Width",  "Height", "HorizontalBaseline", "VerticalBaseline"];
+	}
+	
+	async getSerializationStrings() {
+		return [ this.width.toString(), this.height.toString(), this.horzBaseline.toString(), this.vertBaseline.toString() ];
+	}
+	
 	setSerializationStrings(strings, promises) {
 		this.set("Width",              parseInt(strings[0]));
 		this.set("Height",             parseInt(strings[1]));
 		this.set("HorizontalBaseline", parseInt(strings[2]));
 		this.set("VerticalBaseline",   parseInt(strings[3]));
-	}
-	
-	getSerializationNames() {
-		return [ "Width",  "Height", "HorizontalBaseline", "VerticalBaseline"];
-	}
-	
-	getSerializationStrings() {
-		return [ this.width.toString(), this.height.toString(), this.horzBaseline.toString(), this.vertBaseline.toString() ];
 	}
 };
 
@@ -266,32 +266,32 @@ Visualization.Color = class extends Expression.UnaryExpression {
 			case "Blue" : return this.blueValue;
 			case "Alpha": return this.alphaValue;
 		}
-
+		
 		super.get(name);
-	}
-	
-	setSerializationStrings(strings, promises) {
-		let f = parseFloat(strings[0]); if (isNaN(f)) throw "Invalid number: " + strings[0];
-		this.set("Red", f);
-
-		f = parseFloat(strings[1]); if (isNaN(f)) throw "Invalid number: " + strings[1];
-		this.set("Green", f);
-
-		f = parseFloat(strings[2]); if (isNaN(f)) throw "Invalid number: " + strings[2];
-		this.set("Blue", f);
-
-		f = parseFloat(strings[3]); if (isNaN(f)) throw "Invalid number: " + strings[3];
-		this.set("Alpha", f);
 	}
 	
 	getSerializationNames() {
 		return [ "Red", "Green", "Blue", "Alpha" ];
 	}
 	
-	getSerializationStrings() {
+	async getSerializationStrings() {
 		return [ this.redValue.toString(), this.greenValue.toString(), this.blueValue.toString(), this.alphaValue.toString() ];
 	}
-
+	
+	setSerializationStrings(strings, promises) {
+		let f = parseFloat(strings[0]); if (isNaN(f)) throw "Invalid number: " + strings[0];
+		this.set("Red", f);
+		
+		f = parseFloat(strings[1]); if (isNaN(f)) throw "Invalid number: " + strings[1];
+		this.set("Green", f);
+		
+		f = parseFloat(strings[2]); if (isNaN(f)) throw "Invalid number: " + strings[2];
+		this.set("Blue", f);
+		
+		f = parseFloat(strings[3]); if (isNaN(f)) throw "Invalid number: " + strings[3];
+		this.set("Alpha", f);
+	}
+	
 	prepareDisplay(context) {
 		let child = this.children[0];
 		child.prepareDisplay(context);
@@ -305,7 +305,7 @@ Visualization.Color = class extends Expression.UnaryExpression {
 	display(context, x, y) {
 		let bkpFillStyle = context.fillStyle;
 		let bkpStrokeStyle = context.strokeStyle;
-
+		
 		context.fillStyle = context.strokeStyle =
 			"rgba(" +
 			(this.redValue * 100.0).toString() + "%," +
@@ -330,7 +330,7 @@ Visualization.Bold = class extends Expression.UnaryExpression {
 			case "Value" : this.value = value; return;
 			case "Set"   : this.isSet = value; return;
 		}
-
+		
 		super.set(name, value);
 	}
 	
@@ -339,8 +339,16 @@ Visualization.Bold = class extends Expression.UnaryExpression {
 			case "Value" : return this.value;
 			case "Set"   : return this.isSet;
 		}
-
+		
 		super.get(name);
+	}
+	
+	getSerializationNames() {
+		return [ "Value", "Set" ];
+	}
+	
+	async getSerializationStrings() {
+		return [ this.value ? "True" : "False", this.isSet ? "True" : "False" ];
 	}
 	
 	setSerializationStrings(strings, promises) {
@@ -349,7 +357,7 @@ Visualization.Bold = class extends Expression.UnaryExpression {
 			case "False" : this.set("Value", false); break;
 			default : throw "Invalid value";
 		}
-
+		
 		switch (strings[1]) {
 			case "True"  : this.set("Set", true);  break;
 			case "False" : this.set("Set", false); break;
@@ -357,30 +365,22 @@ Visualization.Bold = class extends Expression.UnaryExpression {
 		}
 	}
 	
-	getSerializationNames() {
-		return [ "Value", "Set" ];
-	}
-	
-	getSerializationStrings() {
-		return [ this.value ? "True" : "False", this.isSet ? "True" : "False" ];
-	}
-
 	prepareDisplay(context) {
 		let child = this.children[0];
 		
 		let bkp = context.fontInfo.bold;
-
+		
 		if (this.isSet) {
 			context.fontInfo.setBold(context, this.value);
 		}
 		else if (this.value) {
 			context.fontInfo.setBold(context, !bkp);
 		}
-
+		
 		child.prepareDisplay(context);
-
+		
 		context.fontInfo.setBold(context, bkp);
-
+		
 		child.x = child.y = 0;
 		this.width = child.width;
 		this.height = child.height;
@@ -426,13 +426,21 @@ Visualization.Italic = class extends Expression.UnaryExpression {
 		super.get(name);
 	}
 	
+	getSerializationNames() {
+		return [ "Value", "Set" ];
+	}
+	
+	async getSerializationStrings() {
+		return [ this.value ? "True" : "False", this.isSet ? "True" : "False" ];
+	}
+	
 	setSerializationStrings(strings, promises) {
 		switch (strings[0]) {
 			case "True"  : this.set("Value", true);  break;
 			case "False" : this.set("Value", false); break;
 			default : throw "Invalid value";
 		}
-
+		
 		switch (strings[1]) {
 			case "True"  : this.set("Set", true);  break;
 			case "False" : this.set("Set", false); break;
@@ -440,14 +448,6 @@ Visualization.Italic = class extends Expression.UnaryExpression {
 		}
 	}
 	
-	getSerializationNames() {
-		return [ "Value", "Set" ];
-	}
-	
-	getSerializationStrings() {
-		return [ this.value ? "True" : "False", this.isSet ? "True" : "False" ];
-	}
-
 	prepareDisplay(context) {
 		let child = this.children[0];
 		
@@ -508,19 +508,19 @@ Visualization.FontSize = class extends Expression.UnaryExpression {
 		super.get(name);
 	}
 	
+	getSerializationNames() {
+		return [ "Size" ];
+	}
+	
+	async getSerializationStrings() {
+		return [ this.size.toString() ];
+	}
+	
 	setSerializationStrings(strings, promises) {
 		let f = parseFloat(strings[0]); if (isNaN(f)) throw "Invalid number: " + strings[0];
 		this.set("Size", f);
 	}
 	
-	getSerializationNames() {
-		return [ "Size" ];
-	}
-	
-	getSerializationStrings() {
-		return [ this.size.toString() ];
-	}
-
 	prepareDisplay(context) {
 		let child = this.children[0];
 		
@@ -569,29 +569,29 @@ Visualization.FontSizeIncrement = class extends Expression.UnaryExpression {
 		super.get(name);
 	}
 	
+	getSerializationNames() {
+		return [ "Increment" ];
+	}
+	
+	async getSerializationStrings() {
+		return [ this.increment.toString() ];
+	}
+	
 	setSerializationStrings(strings, promises) {
 		let f = parseFloat(strings[0]); if (isNaN(f)) throw "Invalid number: " + strings[0];
 		this.set("Increment", f);
 	}
 	
-	getSerializationNames() {
-		return [ "Increment" ];
-	}
-	
-	getSerializationStrings() {
-		return [ this.increment.toString() ];
-	}
-
 	prepareDisplay(context) {
 		let child = this.children[0];
 		
 		let bkp = context.fontInfo.size;
 		context.fontInfo.setSizeRelative(context, this.increment);
-
+		
 		child.prepareDisplay(context);
-
+		
 		context.fontInfo.setSizeAbsolute(context, bkp);
-
+		
 		child.x = child.y = 0;
 		this.width = child.width;
 		this.height = child.height;
@@ -630,18 +630,18 @@ Visualization.FontName = class extends Expression.UnaryExpression {
 		super.get(name);
 	}
 	
-	setSerializationStrings(strings, promises) {
-		this.set("Name", strings[0]);
-	}
-	
 	getSerializationNames() {
 		return [ "Name" ];
 	}
 	
-	getSerializationStrings() {
+	async getSerializationStrings() {
 		return [ this.fontName ];
 	}
-
+	
+	setSerializationStrings(strings, promises) {
+		this.set("Name", strings[0]);
+	}
+	
 	prepareDisplay(context) {
 		let child = this.children[0];
 		
