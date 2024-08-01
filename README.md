@@ -24,4 +24,5 @@ Take a look at this [tutorial](https://formulae.org/?script=tutorials/Complex) t
 * Set font size expression
 * Set font increment expression
 * Set font name expression
+* Set expression as "selected"
 * Programmatically create the previous expressions
