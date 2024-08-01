@@ -28,6 +28,10 @@
 	"leafItalic"   : "Fijar itálica",
 	"actionItalic" : "Fijar itálica ...",
 
+	"nameSelected"  : "Seleccionado",
+	"childSelected" : "Expresión a ser mostrada como seleccionada",
+	"leafSelected"  : "Seleccionada",
+	
 	"nameFontSize"        : "Tamaño de fuente",
 	"messageFontSize"     : "Seleccione tamaño de fuente",
 	"messageSizeFontSize" : "Tamaño de fuente",
@@ -77,4 +81,3 @@
 	"childrenSetFontName" : [ "Expresión", "Nombre de fuente" ],
 	"leafSetFontName"     : "Programáticamente fijar nombre de fuente"
 }
-

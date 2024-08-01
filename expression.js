@@ -669,6 +669,43 @@ Visualization.FontName = class extends Expression.UnaryExpression {
 	}
 };
 
+Visualization.Selected = class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.Selected"; }
+	getName() { return Visualization.messages["nameSelected"]; }
+	getChildName(index) { return Visualization.messages["childSelected"]; }
+
+	prepareDisplay(context) {
+		let child = this.children[0];
+		child.prepareDisplay(context);
+		
+		child.x = child.y = 0;
+		
+		this.width = child.width;
+		this.height = child.height;
+		
+		this.horzBaseline = child.horzBaseline;
+		this.vertBaseline = child.vertBaseline;
+	}
+	
+	display(context, x, y) {
+		let child = this.children[0];
+		
+		///////////////////////////////////////
+		
+		//let bkpOperation = context.globalCompositeOperation;
+		//context.globalCompositeOperation = "difference";
+		
+		let bkpFillStyle = context.fillStyle;
+		context.fillStyle = "lightgray";
+		context.fillRect(x, y, child.width, child.height);
+		context.fillStyle = bkpFillStyle;
+		
+		//context.globalCompositeOperation = bkpOperation;
+		
+		child.display(context, x + child.x, y + child.y);
+	}
+}
+
 Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.CrossedOut",      Visualization.CrossedOut);
 	Formulae.setExpression(module, "Visualization.Metrics",         Visualization.Metrics);
@@ -679,6 +716,7 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.Color",             Visualization.Color);
 	Formulae.setExpression(module, "Visualization.Bold",              Visualization.Bold);
 	Formulae.setExpression(module, "Visualization.Italic",            Visualization.Italic);
+	Formulae.setExpression(module, "Visualization.Selected",          Visualization.Selected);
 	Formulae.setExpression(module, "Visualization.FontSize",          Visualization.FontSize);
 	Formulae.setExpression(module, "Visualization.FontSizeIncrement", Visualization.FontSizeIncrement);
 	Formulae.setExpression(module, "Visualization.FontName",          Visualization.FontName);

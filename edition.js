@@ -310,6 +310,7 @@ Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCrossedOut"],      () => Expression.wrapperEdition("Visualization.CrossedOut"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafMetrics"],         () => Expression.wrapperEdition("Visualization.Metrics"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCreateRectangle"], () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSelected"],        () => Expression.wrapperEdition("Visualization.Selected"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Horizontal array",                            () => Expression.binaryEdition  ("Visualization.HorizontalArray", false));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Vertical array",                              () => Expression.binaryEdition  ("Visualization.VerticalArray", false));
 	

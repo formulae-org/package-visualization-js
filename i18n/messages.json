@@ -28,6 +28,10 @@
 	"leafItalic"   : "Set italic",
 	"actionItalic" : "Set italic ...",
 
+	"nameSelected"  : "Selected",
+	"childSelected" : "Expression to show as selected",
+	"leafSelected"  : "Selected",
+	
 	"nameFontSize"        : "Font size",
 	"messageFontSize"     : "Select font size",
 	"messageSizeFontSize" : "Font size",
@@ -50,31 +54,30 @@
 	"mnemonicSetColor" : "SetColor",
 	"nameSetColor"     : "Set color",
 	"childrenSetColor" : [ "Expression", "Color" ],
-	"leafSetColor"     : "Programatically set color",
+	"leafSetColor"     : "Programmatically set color",
 
 	"mnemonicSetBold" : "SetBold",
 	"nameSetBold"     : "Set bold",
 	"childrenSetBold" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
-	"leafSetBold"     : "Programatically set bold",
+	"leafSetBold"     : "Programmatically set bold",
 
 	"mnemonicSetItalic" : "SetItalic",
 	"nameSetItalic"     : "Set italic",
 	"childrenSetItalic" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
-	"leafSetItalic"     : "Programatically set italic",
+	"leafSetItalic"     : "Programmatically set italic",
 
 	"mnemonicSetFontSize" : "SetFontSize",
 	"nameSetFontSize"     : "Set font size",
 	"childrenSetFontSize" : [ "Expression", "Font size" ],
-	"leafSetFontSize"     : "Programatically set font size",
+	"leafSetFontSize"     : "Programmatically set font size",
 
 	"mnemonicSetFontSizeIncrement" : "SetFontSizeIncrement",
 	"nameSetFontSizeIncrement"     : "Set font size increment",
 	"childrenSetFontSizeIncrement" : [ "Expression", "Font size increment" ],
-	"leafSetFontSizeIncrement"     : "Programatically set font size increment",
+	"leafSetFontSizeIncrement"     : "Programmatically set font size increment",
 
 	"mnemonicSetFontName" : "SetFontName",
 	"nameSetFontName"     : "Set font name",
 	"childrenSetFontName" : [ "Expression", "Font name" ],
-	"leafSetFontName"     : "Programatically set font name"
+	"leafSetFontName"     : "Programmatically set font name"
 }
-
