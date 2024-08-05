@@ -673,7 +673,7 @@ Visualization.Selected = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.Selected"; }
 	getName() { return Visualization.messages["nameSelected"]; }
 	getChildName(index) { return Visualization.messages["childSelected"]; }
-
+	
 	prepareDisplay(context) {
 		let child = this.children[0];
 		child.prepareDisplay(context);
@@ -706,6 +706,33 @@ Visualization.Selected = class extends Expression.UnaryExpression {
 	}
 }
 
+Visualization.Parentheses = class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.Parentheses"; }
+	getName() { return Visualization.messages["nameParentheses"]; }
+	getChildName(index) { return Visualization.messages["childParentheses"]; }
+	
+	prepareDisplay(context) {
+		let child = this.children[0];
+		child.prepareDisplay(context);
+		
+		child.x = 4;
+		child.y = 0;
+		
+		this.width = child.width + 8;
+		this.height = child.height;
+		
+		this.horzBaseline = child.horzBaseline;
+		this.vertBaseline = child.vertBaseline + 4;
+	}
+	
+	display(context, x, y) {
+		let child = this.children[0];
+		
+		child.display(context, x + child.x, y + child.y);
+		child.drawParenthesesAround(context, x + child.x, y + child.y);
+	}
+}
+
 Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.CrossedOut",      Visualization.CrossedOut);
 	Formulae.setExpression(module, "Visualization.Metrics",         Visualization.Metrics);
@@ -717,6 +744,7 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.Bold",              Visualization.Bold);
 	Formulae.setExpression(module, "Visualization.Italic",            Visualization.Italic);
 	Formulae.setExpression(module, "Visualization.Selected",          Visualization.Selected);
+	Formulae.setExpression(module, "Visualization.Parentheses",       Visualization.Parentheses);
 	Formulae.setExpression(module, "Visualization.FontSize",          Visualization.FontSize);
 	Formulae.setExpression(module, "Visualization.FontSizeIncrement", Visualization.FontSizeIncrement);
 	Formulae.setExpression(module, "Visualization.FontName",          Visualization.FontName);

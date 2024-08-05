@@ -32,6 +32,10 @@
 	"childSelected" : "Expresión a ser mostrada como seleccionada",
 	"leafSelected"  : "Seleccionada",
 	
+	"nameParentheses"  : "Paréntesis",
+	"childParentheses" : "Expresión a ser mostrada entre paréntesis",
+	"leafParentheses"  : "Paréntesis",
+	
 	"nameFontSize"        : "Tamaño de fuente",
 	"messageFontSize"     : "Seleccione tamaño de fuente",
 	"messageSizeFontSize" : "Tamaño de fuente",

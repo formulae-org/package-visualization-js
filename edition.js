@@ -27,10 +27,10 @@ Visualization.editionColor = function() {
 		newExpression.set("Green", g);
 		newExpression.set("Blue",  b);
 		newExpression.set("Alpha", o);
-
+		
 		Formulae.sExpression.replaceBy(newExpression);
 		newExpression.addChild(Formulae.sExpression);
-
+		
 		Formulae.sHandler.prepareDisplay();
 		Formulae.sHandler.display();
 		Formulae.setSelected(Formulae.sHandler, newExpression, false);
@@ -311,6 +311,7 @@ Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafMetrics"],         () => Expression.wrapperEdition("Visualization.Metrics"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCreateRectangle"], () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSelected"],        () => Expression.wrapperEdition("Visualization.Selected"));
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafParentheses"],     () => Expression.wrapperEdition("Visualization.Parentheses"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Horizontal array",                            () => Expression.binaryEdition  ("Visualization.HorizontalArray", false));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Vertical array",                              () => Expression.binaryEdition  ("Visualization.VerticalArray", false));
 	

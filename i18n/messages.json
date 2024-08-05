@@ -32,6 +32,10 @@
 	"childSelected" : "Expression to show as selected",
 	"leafSelected"  : "Selected",
 	
+	"nameParentheses"  : "Parentheses",
+	"childParentheses" : "Expression to show in parentheses",
+	"leafParentheses"  : "Parentheses",
+	
 	"nameFontSize"        : "Font size",
 	"messageFontSize"     : "Select font size",
 	"messageSizeFontSize" : "Font size",
