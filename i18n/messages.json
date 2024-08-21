@@ -36,6 +36,10 @@
 	"childParentheses" : "Expression to show in parentheses",
 	"leafParentheses"  : "Parentheses",
 	
+	"nameSpurious"  : "Spurious",
+	"childSpurious" : "Expression to show as spurious",
+	"leafSpurious"  : "Spurious",
+	
 	"nameFontSize"        : "Font size",
 	"messageFontSize"     : "Select font size",
 	"messageSizeFontSize" : "Font size",

@@ -36,6 +36,10 @@
 	"childParentheses" : "Expresión a ser mostrada entre paréntesis",
 	"leafParentheses"  : "Paréntesis",
 	
+	"nameSpurious"  : "Espurio",
+	"childSpurious" : "Expresión a ser mostrada como espurio",
+	"leafSpurious"  : "Espurio",
+	
 	"nameFontSize"        : "Tamaño de fuente",
 	"messageFontSize"     : "Seleccione tamaño de fuente",
 	"messageSizeFontSize" : "Tamaño de fuente",

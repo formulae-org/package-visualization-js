@@ -733,6 +733,31 @@ Visualization.Parentheses = class extends Expression.UnaryExpression {
 	}
 }
 
+Visualization.Spurious = class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.Spurious"; }
+	getName() { return Visualization.messages["nameSpurious"]; }
+	getChildName(index) { return Visualization.messages["childSpurious"]; }
+	
+	prepareDisplay(context) {
+		let child = this.children[0];
+		child.prepareDisplay(context);
+		
+		child.x = 0;
+		child.y = 0;
+		
+		this.width = child.width;
+		this.height = child.height;
+		
+		this.horzBaseline = child.horzBaseline;
+		this.vertBaseline = child.vertBaseline;
+	}
+	
+	display(context, x, y) {
+		let child = this.children[0];
+		child.display(context, x + child.x, y + child.y);
+	}
+}
+
 Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.CrossedOut",      Visualization.CrossedOut);
 	Formulae.setExpression(module, "Visualization.Metrics",         Visualization.Metrics);
@@ -745,6 +770,7 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.Italic",            Visualization.Italic);
 	Formulae.setExpression(module, "Visualization.Selected",          Visualization.Selected);
 	Formulae.setExpression(module, "Visualization.Parentheses",       Visualization.Parentheses);
+	Formulae.setExpression(module, "Visualization.Spurious",          Visualization.Spurious);
 	Formulae.setExpression(module, "Visualization.FontSize",          Visualization.FontSize);
 	Formulae.setExpression(module, "Visualization.FontSizeIncrement", Visualization.FontSizeIncrement);
 	Formulae.setExpression(module, "Visualization.FontName",          Visualization.FontName);
