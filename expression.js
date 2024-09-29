@@ -758,6 +758,53 @@ Visualization.Spurious = class extends Expression.UnaryExpression {
 	}
 }
 
+Visualization.Key = class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.Key"; }
+	getName() { return Visualization.messages["nameKey"]; }
+	
+	prepareDisplay(context) {
+		let child = this.children[0];
+		
+		let bkpFontName = context.fontInfo.name;
+		context.fontInfo.setName(context, "Arial");
+		
+		let bkpFontSize = context.fontInfo.size;
+		context.fontInfo.setSizeRelative(context, -2);
+		
+		child.prepareDisplay(context);
+		
+		context.fontInfo.setSizeAbsolute(context, bkpFontSize);
+		context.fontInfo.setName(context, bkpFontName);
+		
+		child.x = child.y = 5;
+		this.width = child.width + 10;
+		this.height = child.height + 10;
+		this.horzBaseline = Math.round(this.height / 2);
+		this.vertBaseline = Math.round(child.width / 2);
+	}
+	
+	display(context, x, y) {
+		let child = this.children[0];
+		
+		let bkpFontName = context.fontInfo.name;
+		context.fontInfo.setName(context, "Arial");
+		
+		let bkpFontSize = context.fontInfo.size;
+		context.fontInfo.setSizeRelative(context, -2);
+		
+		child.display(context, x + child.x, y + child.y);
+		
+		context.beginPath();
+		context.roundRect(x + 0.5, y + 0.5, this.width,     this.height,     2);
+		context.roundRect(x + 0.5, y + 0.5, this.width - 1, this.height - 1, 2);
+		context.roundRect(x + 0.5, y + 0.5, this.width - 2, this.height - 2, 2);
+		context.stroke();
+		
+		context.fontInfo.setSizeAbsolute(context, bkpFontSize);
+		context.fontInfo.setName(context, bkpFontName);
+	}
+};
+
 Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.CrossedOut",      Visualization.CrossedOut);
 	Formulae.setExpression(module, "Visualization.Metrics",         Visualization.Metrics);
@@ -771,6 +818,8 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.Selected",          Visualization.Selected);
 	Formulae.setExpression(module, "Visualization.Parentheses",       Visualization.Parentheses);
 	Formulae.setExpression(module, "Visualization.Spurious",          Visualization.Spurious);
+	Formulae.setExpression(module, "Visualization.Key",               Visualization.Key);
+	
 	Formulae.setExpression(module, "Visualization.FontSize",          Visualization.FontSize);
 	Formulae.setExpression(module, "Visualization.FontSizeIncrement", Visualization.FontSizeIncrement);
 	Formulae.setExpression(module, "Visualization.FontName",          Visualization.FontName);

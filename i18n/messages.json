@@ -40,6 +40,10 @@
 	"childSpurious" : "Expression to show as spurious",
 	"leafSpurious"  : "Spurious",
 	
+	"nameKey"  : "Key",
+	"childKey" : "Expression to show as key",
+	"leafKey"  : "Key",
+	
 	"nameFontSize"        : "Font size",
 	"messageFontSize"     : "Select font size",
 	"messageSizeFontSize" : "Font size",

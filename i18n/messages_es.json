@@ -40,6 +40,10 @@
 	"childSpurious" : "Expresión a ser mostrada como espurio",
 	"leafSpurious"  : "Espurio",
 	
+	"nameKey"  : "Tecla",
+	"childKey" : "Expresión a ser mostrada como tecla",
+	"leafKey"  : "Tecla",
+	
 	"nameFontSize"        : "Tamaño de fuente",
 	"messageFontSize"     : "Seleccione tamaño de fuente",
 	"messageSizeFontSize" : "Tamaño de fuente",
