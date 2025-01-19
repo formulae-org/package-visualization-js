@@ -24,7 +24,7 @@ Visualization.CrossedOut = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.CrossedOut"; }
 	getName() { return Visualization.messages["nameCrossedOut"]; }
 	getChildName(index) { return Visualization.messages["childCrossedOut"]; }
-
+	
 	prepareDisplay(context) {
 		let child = this.children[0];
 		child.prepareDisplay(context);
@@ -42,7 +42,7 @@ Visualization.CrossedOut = class extends Expression.UnaryExpression {
 		let child = this.children[0];
 		
 		child.display(context, x + child.x, y + child.y);
-
+		
 		context.beginPath();
 		context.moveTo (x, y + this.height); context.lineTo(x + this.width, y); // preventing obfuscation
 		context.stroke();
@@ -53,7 +53,7 @@ Visualization.Metrics = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.Metrics"; }
 	getName() { return Visualization.messages["nameMetrics"]; }
 	getChildName(index) { return Visualization.messages["childMetrics"]; }
-
+	
 	prepareDisplay(context) {
 		let child = this.children[0];
 		
@@ -71,21 +71,21 @@ Visualization.Metrics = class extends Expression.UnaryExpression {
 		
 		let bkpStrokeStyle = context.strokeStyle;
 		context.strokeStyle = "#7f7f7f";
-
+		
 		context.strokeRect(x, y, this.width, this.height);
-
+		
 		context.beginPath();
-
+		
 		// vertical baselines
 		context.moveTo (x + 5 + child.vertBaseline, y              ); context.lineTo(x + 5 + child.vertBaseline, y + 5              ); // preventing obfuscation
 		context.moveTo (x + 5 + child.vertBaseline, y + this.height); context.lineTo(x + 5 + child.vertBaseline, y + this.height - 5); // preventing obfuscation
-
+		
 		// horizontal baselines
 		context.moveTo (x,              y + 5 + child.horzBaseline); context.lineTo(x + 5,              y + 5 + child.horzBaseline); // preventing obfuscation
 		context.moveTo (x + this.width, y + 5 + child.horzBaseline); context.lineTo(x + this.width - 5, y + 5 + child.horzBaseline); // preventing obfuscation
-
+		
 		context.stroke();
-
+		
 		context.strokeStyle = bkpStrokeStyle;
 		
 		child.display(context, x + child.x, y + child.y);
@@ -95,7 +95,7 @@ Visualization.Metrics = class extends Expression.UnaryExpression {
 Visualization.Rectangle = class extends Expression.NullaryExpression {
 	getTag() { return "Visualization.Rectangle"; }
 	getName() { return Visualization.messages["nameRectangle"]; }
-
+	
 	set(name, value) {
 		switch (name) {
 			case "Width":              this.width        = value; return;
@@ -136,21 +136,21 @@ Visualization.HorizontalArray = class extends Expression {
 	getTag() { return "Visualization.HorizontalArray"; }
 	getName() { return "Horizontal array"; }
 	canHaveChildren(count) { return count >= 2; }
-
+	
 	prepareDisplay(context) {
 		this.width = 0;
 		this.horzBaseline = 0;
-
+		
 		let i, n = this.children.length;
 		let maxSemiHeight = 0;
 		let child;
-
+		
 		for (i = 0; i < n; ++i) {
 			(child = this.children[i]).prepareDisplay(context);
-
+			
 			if (child.horzBaseline > this.horzBaseline) this.horzBaseline = child.horzBaseline;
 			if (child.height - child.horzBaseline > maxSemiHeight) maxSemiHeight = child.height - child.horzBaseline;
-
+			
 			if (i > 0) this.width += 5;
 			child.x = this.width;
 			this.width += child.width;
@@ -160,14 +160,14 @@ Visualization.HorizontalArray = class extends Expression {
 			child = this.children[i];
 			child.y = this.horzBaseline - child.horzBaseline;
 		}
-
+		
 		this.height = this.horzBaseline + maxSemiHeight;
 		this.vertBaseline = Math.round(this.width / 2);
 	}
-
+	
 	display(context, x, y) {
 		let child;
-
+		
 		for (let i = 0, n = this.children.length; i < n; ++i) {
 			(child = this.children[i]).display(context, x + child.x, y + child.y);
 		}
@@ -178,21 +178,21 @@ Visualization.VerticalArray = class extends Expression {
 	getTag() { return "Visualization.VerticalArray"; }
 	getName() { return "Vertical array"; }
 	canHaveChildren(count) { return count >= 2; }
-
+	
 	prepareDisplay(context) {
 		this.height = 0;
 		this.vertBaseline = 0;
-
+		
 		let i, n = this.children.length;
 		let maxSemiWidth = 0;
 		let child;
-
+		
 		for (i = 0; i < n; ++i) {
 			(child = this.children[i]).prepareDisplay(context);
-
+			
 			if (child.vertBaseline > this.vertBaseline) this.vertBaseline = child.vertBaseline;
 			if (child.width - child.vertBaseline > maxSemiWidth) maxSemiWidth = child.width - child.vertBaseline;
-
+			
 			if (i > 0) this.height += 5;
 			child.y = this.height;
 			this.height += child.height;
@@ -202,19 +202,19 @@ Visualization.VerticalArray = class extends Expression {
 			child = this.children[i];
 			child.x = this.vertBaseline - child.vertBaseline;
 		}
-
+		
 		this.width = this.vertBaseline + maxSemiWidth;
 		this.horzBaseline = Math.round(this.height / 2);
 	}
-
+	
 	display(context, x, y) {
 		let child;
-
+		
 		for (let i = 0, n = this.children.length; i < n; ++i) {
 			(child = this.children[i]).display(context, x + child.x, y + child.y);
 		}
 	}
-
+	
 	moveAcross(i, direction) {
 		if (direction == Expression.UP) {
 			if (i > 0) {
@@ -229,7 +229,7 @@ Visualization.VerticalArray = class extends Expression {
 		
 		return this.moveOut(direction);
 	}
-
+	
 	moveTo(direction) {
 		let n = this.children.length;
 		
@@ -247,7 +247,7 @@ Visualization.VerticalArray = class extends Expression {
 Visualization.Color = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.Color"; }
 	getName() { return Visualization.messages["nameColor"]; }
-
+	
 	set(name, value) {
 		switch (name) {
 			case "Red"  : this.redValue   = value; return;
@@ -255,7 +255,7 @@ Visualization.Color = class extends Expression.UnaryExpression {
 			case "Blue" : this.blueValue  = value; return;
 			case "Alpha": this.alphaValue = value; return;
 		}
-
+		
 		super.set(name, value);
 	}
 	
@@ -313,9 +313,9 @@ Visualization.Color = class extends Expression.UnaryExpression {
 			(this.blueValue * 100.0).toString() + "%," +
 			this.alphaValue.toString() + ")"
 		;
-
+		
 		this.children[0].display(context, x, y);
-
+		
 		context.strokeStyle = bkpStrokeStyle;
 		context.fillStyle = bkpFillStyle;
 	}
@@ -324,7 +324,7 @@ Visualization.Color = class extends Expression.UnaryExpression {
 Visualization.Bold = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.Bold"; }
 	getName() { return Visualization.messages["nameBold"]; }
-
+	
 	set(name, value) {
 		switch (name) {
 			case "Value" : this.value = value; return;
@@ -355,13 +355,13 @@ Visualization.Bold = class extends Expression.UnaryExpression {
 		switch (strings[0]) {
 			case "True"  : this.set("Value", true);  break;
 			case "False" : this.set("Value", false); break;
-			default : throw "Invalid value";
+			default      : throw "Invalid value";
 		}
 		
 		switch (strings[1]) {
 			case "True"  : this.set("Set", true);  break;
 			case "False" : this.set("Set", false); break;
-			default : throw "Invalid value";
+			default      : throw "Invalid value";
 		}
 	}
 	
@@ -805,6 +805,95 @@ Visualization.Key = class extends Expression.UnaryExpression {
 	}
 };
 
+Visualization.Code = class extends Expression.NullaryExpression {
+	getTag() { return "Visualization.Code"; }
+	getName() { return Visualization.messages["nameCode"]; }
+	
+	set(name, value) {
+		if (name == "Value") {
+			this.code = value;
+		}
+		else {
+			super.set(name, value);
+		}
+	}
+	
+	get(name) {
+		if (name == "Value") {
+			return this.code;
+		}
+		
+		super.get(name);
+	}
+	
+	getSerializationNames() {
+		return [ "Value" ];
+	}
+	
+	async getSerializationStrings() {
+		return [ this.code ];
+	}
+	
+	setSerializationStrings(strings, promises) {
+		this.set("Value", strings[0]);
+	}
+	
+	prepareDisplay(context) {
+		//if (this.lines === undefined) {
+			this.lines = this.code.replaceAll(/\t/g, "   ").split(/\n\r?/);
+		//}
+		
+		let bkpFontName = context.fontInfo.name;
+		let bkpFontSize = context.fontInfo.size;
+		context.fontInfo.setName(context, "Courier New");
+		context.fontInfo.setSizeRelative(context, -2);
+		
+		this.width = 0;
+		this.height = 0;
+		let w;
+		
+		for (let i = 0, n = this.lines.length; i < n; ++i) {
+			w = Math.round(context.measureText(this.lines[i]).width);
+			if (w > this.width) this.width = w;
+			
+			if (i > 0) this.height += Math.round(context.fontInfo.size * 0.25);
+			this.height += context.fontInfo.size;
+		}
+		
+		this.width += context.fontInfo.size * 2;
+		this.height += context.fontInfo.size * 2;
+		
+		this.horzBaseline = Math.round(this.height / 2);
+		this.vertBaseline = Math.round(this.width / 2);	
+		
+		context.fontInfo.setSizeAbsolute(context, bkpFontSize);
+		context.fontInfo.setName(context, bkpFontName);
+	}
+	
+	display(context, x, y) {
+		let bkpFontName = context.fontInfo.name;
+		let bkpFontSize = context.fontInfo.size;
+		context.fontInfo.setName(context, "Courier New");
+		context.fontInfo.setSizeRelative(context, -2);
+		
+		let bkpFillStyle = context.fillStyle;
+		context.fillStyle = "rgb(235, 235, 235)";
+		context.fillRect(x, y, this.width, this.height);
+		context.fillStyle = bkpFillStyle;
+		
+		let yy = context.fontInfo.size * 2;
+		
+		for (let i = 0, n = this.lines.length; i < n; ++i) {
+			this.drawText(context, this.lines[i], x + context.fontInfo.size, y + yy);
+			yy += Math.round(context.fontInfo.size * 1.25);
+		}
+		
+		//context.strokeStyle = bkpFillStyle;
+		context.fontInfo.setSizeAbsolute(context, bkpFontSize);
+		context.fontInfo.setName(context, bkpFontName);
+	}
+}
+
 Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.CrossedOut",      Visualization.CrossedOut);
 	Formulae.setExpression(module, "Visualization.Metrics",         Visualization.Metrics);
@@ -812,13 +901,14 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.HorizontalArray", Visualization.HorizontalArray);
 	Formulae.setExpression(module, "Visualization.VerticalArray",   Visualization.VerticalArray);
 	
-	Formulae.setExpression(module, "Visualization.Color",             Visualization.Color);
-	Formulae.setExpression(module, "Visualization.Bold",              Visualization.Bold);
-	Formulae.setExpression(module, "Visualization.Italic",            Visualization.Italic);
-	Formulae.setExpression(module, "Visualization.Selected",          Visualization.Selected);
-	Formulae.setExpression(module, "Visualization.Parentheses",       Visualization.Parentheses);
-	Formulae.setExpression(module, "Visualization.Spurious",          Visualization.Spurious);
-	Formulae.setExpression(module, "Visualization.Key",               Visualization.Key);
+	Formulae.setExpression(module, "Visualization.Color",       Visualization.Color);
+	Formulae.setExpression(module, "Visualization.Bold",        Visualization.Bold);
+	Formulae.setExpression(module, "Visualization.Italic",      Visualization.Italic);
+	Formulae.setExpression(module, "Visualization.Selected",    Visualization.Selected);
+	Formulae.setExpression(module, "Visualization.Parentheses", Visualization.Parentheses);
+	Formulae.setExpression(module, "Visualization.Spurious",    Visualization.Spurious);
+	Formulae.setExpression(module, "Visualization.Key",         Visualization.Key);
+	Formulae.setExpression(module, "Visualization.Code",        Visualization.Code);
 	
 	Formulae.setExpression(module, "Visualization.FontSize",          Visualization.FontSize);
 	Formulae.setExpression(module, "Visualization.FontSizeIncrement", Visualization.FontSizeIncrement);
@@ -843,3 +933,4 @@ Visualization.setExpressions = function(module) {
 		max:          row[2]
 	}));
 };
+

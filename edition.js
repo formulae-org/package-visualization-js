@@ -76,21 +76,21 @@ Visualization.boldItalicSelection = function(value, set, f) {
 
 		Visualization.boldItalicForm = table;
 	}
-
+	
 	let table = Visualization.boldItalicForm;
 	let tt = table.childNodes[1].childNodes[1].childNodes[1].childNodes[0];
 	let ft = table.childNodes[1].childNodes[2].childNodes[1].childNodes[0];
 	let tf = table.childNodes[1].childNodes[4].childNodes[1].childNodes[0];
 	let ff = table.childNodes[1].childNodes[5].childNodes[1].childNodes[0];
 	let ok = table.childNodes[1].childNodes[6].childNodes[0];
-
+	
 	if (value) {
 		if (set) tt.checked = true; else ft.checked = true;
 	}
 	else {
 		if (set) tf.checked = true; else ff.checked = true;
 	}
-
+	
 	ok.onclick = () => {
 		Formulae.resetModal();
 		let v, s;
@@ -306,6 +306,67 @@ Visualization.actionFontName = {
 	}
 };
 
+Visualization.codeSelection = function(value, f) {
+	if (Visualization.codeForm === undefined) {
+		let table = document.createElement("table");
+		table.innerHTML =
+`
+<tr><td>Code:
+<tr><td><textarea name="ta" cols=100 rows=10></textarea>
+<tr><td><button type="button">Ok</button>
+`;
+		
+		Visualization.codeForm = table;
+	}
+	
+	let table = Visualization.codeForm;
+	
+	let c = table.childNodes[1].childNodes[1].childNodes[0].childNodes[0];
+	let ok = table.childNodes[1].childNodes[2].childNodes[0].childNodes[0];
+	
+	c.value = value;
+	
+	ok.onclick = () => {
+		Formulae.resetModal();
+		f(c.value);
+	};
+	
+	Formulae.setModal(table);
+};
+
+Visualization.editionCode = function() {
+	Visualization.codeSelection(
+		"",
+		value => {
+			let newExpression = Formulae.createExpression("Visualization.Code");
+			newExpression.set("Value", value);
+			
+			Formulae.sExpression.replaceBy(newExpression);
+			
+			Formulae.sHandler.prepareDisplay();
+			Formulae.sHandler.display();
+			Formulae.setSelected(Formulae.sHandler, newExpression, false);
+		}
+	);
+};
+
+Visualization.actionCode = {
+	isAvailableNow: () => Formulae.sHandler.type != Formulae.ROW_OUTPUT,
+	getDescription: () => Visualization.messages["actionFontName"],
+	doAction: () => {
+		Visualization.codeSelection(
+			Formulae.sExpression.get("Value"),
+			value => {
+				Formulae.sExpression.set("Value", value);
+				
+				Formulae.sHandler.prepareDisplay();
+				Formulae.sHandler.display();
+				Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
+			}
+		);
+	}
+};
+
 Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCrossedOut"],      () => Expression.wrapperEdition("Visualization.CrossedOut"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafMetrics"],         () => Expression.wrapperEdition("Visualization.Metrics"));
@@ -324,6 +385,7 @@ Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontSize"],          Visualization.editionFontSize);
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontSizeIncrement"], Visualization.editionFontSizeIncrement);
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontName"],          Visualization.editionFontName);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCode"],              Visualization.editionCode);
 	
 	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetColor"],             () => Expression.binaryEdition ("Visualization.SetColor",             true));
 	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetBold"],              () => Expression.wrapperEdition("Visualization.SetBold"));
@@ -340,4 +402,6 @@ Visualization.setActions = function() {
 	Formulae.addAction("Visualization.FontSize",          Visualization.actionFontSize);
 	Formulae.addAction("Visualization.FontSizeIncrement", Visualization.actionFontSizeIncrement);
 	Formulae.addAction("Visualization.FontName",          Visualization.actionFontName);
+	Formulae.addAction("Visualization.Code",              Visualization.actionCode);
 };
+

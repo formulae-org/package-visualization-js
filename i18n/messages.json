@@ -91,5 +91,10 @@
 	"mnemonicSetFontName" : "SetFontName",
 	"nameSetFontName"     : "Set font name",
 	"childrenSetFontName" : [ "Expression", "Font name" ],
-	"leafSetFontName"     : "Programmatically set font name"
+	"leafSetFontName"     : "Programmatically set font name",
+	
+	"mnemonicCode" : "Code",
+	"nameCode"     : "Code",
+	"leafCode"     : "Code"
 }
+
