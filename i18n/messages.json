@@ -28,6 +28,9 @@
 	"leafItalic"   : "Set italic",
 	"actionItalic" : "Set italic ...",
 
+	"nameCode" : "Code",
+	"leafCode" : "Set as code",
+	
 	"nameSelected"  : "Selected",
 	"childSelected" : "Expression to show as selected",
 	"leafSelected"  : "Selected",
@@ -93,8 +96,7 @@
 	"childrenSetFontName" : [ "Expression", "Font name" ],
 	"leafSetFontName"     : "Programmatically set font name",
 	
-	"mnemonicCode" : "Code",
-	"nameCode"     : "Code",
-	"leafCode"     : "Code"
+	"nameCodeBlock"     : "Code block",
+	"leafCodeBlock"     : "Code block"
 }
 

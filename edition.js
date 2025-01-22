@@ -306,20 +306,20 @@ Visualization.actionFontName = {
 	}
 };
 
-Visualization.codeSelection = function(value, f) {
-	if (Visualization.codeForm === undefined) {
+Visualization.codeBlockSelection = function(value, f) {
+	if (Visualization.codeBlockForm === undefined) {
 		let table = document.createElement("table");
 		table.innerHTML =
 `
-<tr><td>Code:
+<tr><td>Code block:
 <tr><td><textarea name="ta" cols=100 rows=10></textarea>
 <tr><td><button type="button">Ok</button>
 `;
 		
-		Visualization.codeForm = table;
+		Visualization.codeBlockForm = table;
 	}
 	
-	let table = Visualization.codeForm;
+	let table = Visualization.codeBlockForm;
 	
 	let c = table.childNodes[1].childNodes[1].childNodes[0].childNodes[0];
 	let ok = table.childNodes[1].childNodes[2].childNodes[0].childNodes[0];
@@ -334,11 +334,11 @@ Visualization.codeSelection = function(value, f) {
 	Formulae.setModal(table);
 };
 
-Visualization.editionCode = function() {
-	Visualization.codeSelection(
+Visualization.editionCodeBlock = function() {
+	Visualization.codeBlockSelection(
 		"",
 		value => {
-			let newExpression = Formulae.createExpression("Visualization.Code");
+			let newExpression = Formulae.createExpression("Visualization.CodeBlock");
 			newExpression.set("Value", value);
 			
 			Formulae.sExpression.replaceBy(newExpression);
@@ -350,11 +350,11 @@ Visualization.editionCode = function() {
 	);
 };
 
-Visualization.actionCode = {
+Visualization.actionCodeBlock = {
 	isAvailableNow: () => Formulae.sHandler.type != Formulae.ROW_OUTPUT,
 	getDescription: () => Visualization.messages["actionFontName"],
 	doAction: () => {
-		Visualization.codeSelection(
+		Visualization.codeBlockSelection(
 			Formulae.sExpression.get("Value"),
 			value => {
 				Formulae.sExpression.set("Value", value);
@@ -382,10 +382,11 @@ Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafColor"],             Visualization.editionColor);
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafBold"],              Visualization.editionBold);
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafItalic"],            Visualization.editionItalic);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCode"],              () => Expression.wrapperEdition("Visualization.Code"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontSize"],          Visualization.editionFontSize);
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontSizeIncrement"], Visualization.editionFontSizeIncrement);
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontName"],          Visualization.editionFontName);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCode"],              Visualization.editionCode);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCodeBlock"],         Visualization.editionCodeBlock);
 	
 	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetColor"],             () => Expression.binaryEdition ("Visualization.SetColor",             true));
 	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetBold"],              () => Expression.wrapperEdition("Visualization.SetBold"));
@@ -402,6 +403,6 @@ Visualization.setActions = function() {
 	Formulae.addAction("Visualization.FontSize",          Visualization.actionFontSize);
 	Formulae.addAction("Visualization.FontSizeIncrement", Visualization.actionFontSizeIncrement);
 	Formulae.addAction("Visualization.FontName",          Visualization.actionFontName);
-	Formulae.addAction("Visualization.Code",              Visualization.actionCode);
+	Formulae.addAction("Visualization.CodeBlock",         Visualization.actionCodeBlock);
 };
 

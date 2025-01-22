@@ -91,5 +91,9 @@
 	"mnemonicSetFontName" : "FijarNombreFuente",
 	"nameSetFontName"     : "Fijar nombre de fuente",
 	"childrenSetFontName" : [ "Expresión", "Nombre de fuente" ],
-	"leafSetFontName"     : "Programáticamente fijar nombre de fuente"
+	"leafSetFontName"     : "Programáticamente fijar nombre de fuente",
+	
+	"nameCodeBlock"     : "Bloque de código",
+	"leafCodeBlock"     : "Bloque de código"
 }
+

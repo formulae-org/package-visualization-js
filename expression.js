@@ -487,6 +487,58 @@ Visualization.Italic = class extends Expression.UnaryExpression {
 	}
 };
 
+Visualization.Code = class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.Code"; }
+	getName() { return Visualization.messages["nameCode"]; }
+	
+	prepareDisplay(context) {
+		let child = this.children[0];
+		
+		let bkpSize = context.fontInfo.size;
+		context.fontInfo.setSizeRelative(context, -2);
+		
+		let bkpFont = context.fontInfo.name;
+		context.fontInfo.setName(context, "Courier New");
+		
+		let bkpBold = context.fontInfo.bold;
+		context.fontInfo.setBold(context, true);
+		
+		child.prepareDisplay(context);
+		
+		context.fontInfo.setBold(context, bkpBold);
+		context.fontInfo.setName(context, bkpFont);
+		context.fontInfo.setSizeAbsolute(context, bkpSize);
+		
+		child.x = child.y = 0;
+		this.width = child.width;
+		this.height = child.height;
+		this.horzBaseline = child.horzBaseline;
+		this.vertBaseline = child.vertBaseline;
+	}
+	
+	display(context, x, y) {
+		let bkpSize = context.fontInfo.size;
+		context.fontInfo.setSizeRelative(context, -2);
+		
+		let bkpFont = context.fontInfo.name;
+		context.fontInfo.setName(context, "Courier New");
+		
+		let bkpBold = context.fontInfo.bold;
+		context.fontInfo.setBold(context, true);
+		
+		let bkpFillStyle = context.fillStyle;
+		context.fillStyle = "rgb(235, 235, 235)";
+		context.fillRect(x, y, this.width, this.height);
+		context.fillStyle = bkpFillStyle;
+		
+		this.children[0].display(context, x, y);
+		
+		context.fontInfo.setBold(context, bkpBold);
+		context.fontInfo.setName(context, bkpFont);
+		context.fontInfo.setSizeAbsolute(context, bkpSize);
+	}
+};
+
 Visualization.FontSize = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.FontSize"; }
 	getName() { return Visualization.messages["nameFontSize"]; }
@@ -805,9 +857,9 @@ Visualization.Key = class extends Expression.UnaryExpression {
 	}
 };
 
-Visualization.Code = class extends Expression.NullaryExpression {
-	getTag() { return "Visualization.Code"; }
-	getName() { return Visualization.messages["nameCode"]; }
+Visualization.CodeBlock = class extends Expression.NullaryExpression {
+	getTag() { return "Visualization.CodeBlock"; }
+	getName() { return Visualization.messages["nameCodeBlock"]; }
 	
 	set(name, value) {
 		if (name == "Value") {
@@ -888,7 +940,7 @@ Visualization.Code = class extends Expression.NullaryExpression {
 			yy += Math.round(context.fontInfo.size * 1.25);
 		}
 		
-		//context.strokeStyle = bkpFillStyle;
+		context.fillStyle = bkpFillStyle;
 		context.fontInfo.setSizeAbsolute(context, bkpFontSize);
 		context.fontInfo.setName(context, bkpFontName);
 	}
@@ -904,11 +956,12 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.Color",       Visualization.Color);
 	Formulae.setExpression(module, "Visualization.Bold",        Visualization.Bold);
 	Formulae.setExpression(module, "Visualization.Italic",      Visualization.Italic);
+	Formulae.setExpression(module, "Visualization.Code",        Visualization.Code);
 	Formulae.setExpression(module, "Visualization.Selected",    Visualization.Selected);
 	Formulae.setExpression(module, "Visualization.Parentheses", Visualization.Parentheses);
 	Formulae.setExpression(module, "Visualization.Spurious",    Visualization.Spurious);
 	Formulae.setExpression(module, "Visualization.Key",         Visualization.Key);
-	Formulae.setExpression(module, "Visualization.Code",        Visualization.Code);
+	Formulae.setExpression(module, "Visualization.CodeBlock",   Visualization.CodeBlock);
 	
 	Formulae.setExpression(module, "Visualization.FontSize",          Visualization.FontSize);
 	Formulae.setExpression(module, "Visualization.FontSizeIncrement", Visualization.FontSizeIncrement);
