@@ -21,25 +21,25 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 export class Visualization extends Formulae.Package {}
 
 Visualization.createRectangle = async (createRectangle, session) => {
-	let width = CanonicalArithmetic.getNativeInteger(createRectangle.children[0]);
+	let width = Arithmetic.getNativeInteger(createRectangle.children[0]);
 	if (width === undefined || width <= 0) {
 		ReductionManager.setInError(createRectangle.children[0], "Invalid value");
 		throw new ReductionError();
 	}
 	
-	let height = CanonicalArithmetic.getNativeInteger(createRectangle.children[1]);
+	let height = Arithmetic.getNativeInteger(createRectangle.children[1]);
 	if (height === undefined || height <= 0) {
 		ReductionManager.setInError(createRectangle.children[1], "Invalid value");
 		throw new ReductionError();
 	}
 	
-	let horzBaseline = CanonicalArithmetic.getNativeInteger(createRectangle.children[2]);
+	let horzBaseline = Arithmetic.getNativeInteger(createRectangle.children[2]);
 	if (horzBaseline === undefined || horzBaseline < 0 || horzBaseline > height) {
 		ReductionManager.setInError(createRectangle.children[2], "Invalid value");
 		throw new ReductionError();
 	}
 	
-	let vertBaseline = CanonicalArithmetic.getNativeInteger(createRectangle.children[3]);
+	let vertBaseline = Arithmetic.getNativeInteger(createRectangle.children[3]);
 	if (vertBaseline === undefined || vertBaseline < 0 || vertBaseline > width) {
 		ReductionManager.setInError(createRectangle.children[3], "Invalid value");
 		throw new ReductionError();
@@ -125,7 +125,7 @@ Visualization.setFontSizeAndIncrement = async (setFontSizeAndIncrement, session)
 	let isSet = setFontSizeAndIncrement.getTag() === "Visualization.SetFontSize";
 	
 	let parameterExpression = setFontSizeAndIncrement.children[1];
-	let parameter = CanonicalArithmetic.getNativeInteger(parameterExpression);
+	let parameter = Arithmetic.getNativeInteger(parameterExpression);
 	if (parameter === undefined || (isSet && parameter <= 0)) {
 		ReductionManager.setInError(parameterExpression, "Invalid value");
 		throw new ReductionError();
