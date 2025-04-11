@@ -370,6 +370,7 @@ Visualization.actionCodeBlock = {
 Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCrossedOut"],      () => Expression.wrapperEdition("Visualization.CrossedOut"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafMetrics"],         () => Expression.wrapperEdition("Visualization.Metrics"));
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafInvisible"],       () => Expression.wrapperEdition("Visualization.Invisible"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCreateRectangle"], () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSelected"],        () => Expression.wrapperEdition("Visualization.Selected"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafParentheses"],     () => Expression.wrapperEdition("Visualization.Parentheses"));

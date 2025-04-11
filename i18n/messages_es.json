@@ -8,6 +8,10 @@
 	"nameMetrics"  : "Métricas",
 	"childMetrics" : "Expresión a mostrar su métricas",
 	"leafMetrics"  : "Métricas",
+	
+	"nameInvisible"  : "Invisible",
+	"childInvisible" : "Expression a ser mostrada como invisible",
+	"leafInvisible"  : "Invisible",
 
 	"nameRectangle" : "Un rectángulo invisible",
 

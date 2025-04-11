@@ -92,6 +92,26 @@ Visualization.Metrics = class extends Expression.UnaryExpression {
 	}
 }
 
+Visualization.Invisible = class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.Invisible"; }
+	getName() { return Visualization.messages["nameInvisible"]; }
+	getChildName(index) { return Visualization.messages["childinvisible"]; }
+	
+	prepareDisplay(context) {
+		let child = this.children[0];
+		
+		child.prepareDisplay(context);
+		
+		child.x = child.y = 0;
+		this.width = child.width;
+		this.height = child.height;
+		this.horzBaseline = child.horzBaseline;
+		this.vertBaseline = child.vertBaseline;
+	}
+	
+	display(context, x, y) {}
+}
+
 Visualization.Rectangle = class extends Expression.NullaryExpression {
 	getTag() { return "Visualization.Rectangle"; }
 	getName() { return Visualization.messages["nameRectangle"]; }
@@ -949,6 +969,7 @@ Visualization.CodeBlock = class extends Expression.NullaryExpression {
 Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.CrossedOut",      Visualization.CrossedOut);
 	Formulae.setExpression(module, "Visualization.Metrics",         Visualization.Metrics);
+	Formulae.setExpression(module, "Visualization.Invisible",       Visualization.Invisible);
 	Formulae.setExpression(module, "Visualization.Rectangle",       Visualization.Rectangle);
 	Formulae.setExpression(module, "Visualization.HorizontalArray", Visualization.HorizontalArray);
 	Formulae.setExpression(module, "Visualization.VerticalArray",   Visualization.VerticalArray);
