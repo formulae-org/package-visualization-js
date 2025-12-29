@@ -1,10 +1,10 @@
 {
 	"pathVisualization" : "Visualización",
-
+	
 	"nameCrossedOut"  : "Tachado",
 	"childCrossedOut" : "Expresión a tachar",
 	"leafCrossedOut"  : "Tachado",
-
+	
 	"nameMetrics"  : "Métricas",
 	"childMetrics" : "Expresión a mostrar su métricas",
 	"leafMetrics"  : "Métricas",
@@ -12,26 +12,29 @@
 	"nameInvisible"  : "Invisible",
 	"childInvisible" : "Expression a ser mostrada como invisible",
 	"leafInvisible"  : "Invisible",
-
+	
 	"nameRectangle" : "Un rectángulo invisible",
-
+	
 	"mnemonicCreateRectangle" : "CrearRectángulo",
 	"nameCreateRectangle"     : "Crear rectángulo",
 	"childrenCreateRectangle" : [ "Ancho", "Alto", "Línea base horizontal", "Línea base vertical" ],
 	"leafCreateRectangle"     : "Crear rectángulo",
-
+	
 	"nameColor"   : "Color",
 	"leafColor"   : "Fijar color",
 	"actionColor" : "Fijar color ...",
-
+	
 	"nameBold"   : "Negrita",
 	"leafBold"   : "Fijar negrita",
 	"actionBold" : "Fijar negrita ...",
-
+	
 	"nameItalic"   : "Itálica",
 	"leafItalic"   : "Fijar itálica",
 	"actionItalic" : "Fijar itálica ...",
-
+	
+	"nameCode" : "Código",
+	"leafCode" : "Código",
+	
 	"nameSelected"  : "Seleccionado",
 	"childSelected" : "Expresión a ser mostrada como seleccionada",
 	"leafSelected"  : "Seleccionada",
@@ -48,50 +51,108 @@
 	"childKey" : "Expresión a ser mostrada como tecla",
 	"leafKey"  : "Tecla",
 	
+	"nameSuperscript"  : "Superíndice",
+	"leafSuperscript"  : "Superíndice",
+	
+	"nameSubscript"  : "Subíndice",
+	"leafSubscript"  : "Subíndice",
+	
+	"nameHorizontalEllipsis" : "Puntos suspensivos horizontal",
+	"leafHorizontalEllipsis" : "Puntos suspensivos horizontal",
+	
+	"nameVerticalEllipsis" : "Puntos suspensivos vertical",
+	"leafVerticalEllipsis" : "Puntos suspensivos vertical",
+	
+	"nameUpRightDiagonalEllipsis" : "Puntos suspensivos hacia arriba/derecha",
+	"leafUpRightDiagonalEllipsis" : "Puntos suspensivos hacia arriba/derecha",
+	
+	"nameDownRightDiagonalEllipsis" : "Puntos suspensivos hacia abajo/derecha",
+	"leafDownRightDiagonalEllipsis" : "Puntos suspensivos hacia abajo/derecha",
+	
+	"namePlusMinus" : "Mas menos",
+	"leafPlusMinus" : "Mas menos",
+	
+	"nameMinusPlus" : "Menos mas",
+	"leafMinusPlus" : "Menos mas",
+	
+	"nameCongruent"    : "Congruente",
+	"leafCongruent"    : "Congruente",
+	"nameNotCongruent" : "No congruente",
+	"leafNotCongruent" : "No congruente",
+	
+	"nameFigureCongruent"    : "Figura congruente",
+	"leafFigureCongruent"    : "Figura congruente",
+	"nameNotFigureCongruent" : "No figura congruente",
+	"leafNotFigureCongruent" : "No figura congruente",
+	
+	"nameApproximatelyEquals"    : "Aproximadamente igual",
+	"leafApproximatelyEquals"    : "Aproximadamente igual",
+	"nameNotApproximatelyEquals" : "No Aproximadamente igual",
+	"leafNotApproximatelyEquals" : "No Aproximadamente igual",
+	
+	"nameAsymptoticallyEquals"    : "Asintóticamente igual",
+	"leafAsymptoticallyEquals"    : "Asintóticamente igual",
+	"nameNotAsymptoticallyEquals" : "No Asintóticamente igual",
+	"leafNotAsymptoticallyEquals" : "No Asintóticamente igual",
+	
+	"nameProportional"    : "Proporcional",
+	"leafProportional"    : "Proporcional",
+	"nameNotProportional" : "No proporcional",
+	"leafNotProportional" : "No proporcional",
+	
+	"nameInfix"          : "Operación infija",
+	"enterInfixOperator" : "Introduzca operador infijo",
+	"leafInfix"          : "Interactivamente crea operacion infija",
+	
+	"mnemonicCreateInfix" : "CreaInfija",
+	"nameCreateInfix"     : "Crea operación infija",
+	"childrenCreateInfix" : [ "Operador", "Lista de operandos" ],
+	"leafCreateInfix"     : "Programáticamente crea operacion infija",
+	
 	"nameFontSize"        : "Tamaño de fuente",
 	"messageFontSize"     : "Seleccione tamaño de fuente",
 	"messageSizeFontSize" : "Tamaño de fuente",
 	"leafFontSize"        : "Fijar tamaño de fuente",
 	"actionFontSize"      : "Fijar tamaño de fuente ...",
-
+	
 	"nameFontSizeIncrement"             : "Incremento en tamaño de fuente",
 	"messageFontSizeIncrement"          : "Seleccione incremento en tamaño de fuente",
 	"messageIncrementFontSizeIncrement" : "Incremento",
 	"leafFontSizeIncrement"             : "Fijar incremento en tamaño de fuente",
 	"actionFontSizeIncrement"           : "Fijar incremento en tamaño de fuente ...",
-
+	
 	"nameFontName"    : "Nombre de fuente",
 	"messageFontName" : "Fijar nombre de fuente",
 	"leafFontName"    : "Fijar nombre de fuente",
 	"actionFontName"  : "Fijar nombre de fuente ...",
-
+	
 	"pathReflection" : "Visualización.Reflexión",
-
+	
 	"mnemonicSetColor" : "FijarColor",
 	"nameSetColor"     : "Fijar color",
 	"childrenSetColor" : [ "Expresión", "Color" ],
 	"leafSetColor"     : "Programáticamente fijar color",
-
+	
 	"mnemonicSetBold" : "FijarNegrita",
 	"nameSetBold"     : "Fijar negrita",
 	"childrenSetBold" : [ "Expresión", "Valor a ser fijado", "Bandaera a indicar si la operación es fijar o voltear" ],
 	"leafSetBold"     : "Programáticamente fijar negrita",
-
+	
 	"mnemonicSetItalic" : "FijarItálica",
 	"nameSetItalic"     : "Fijar itálica",
 	"childrenSetItalic" : [ "Expresión", "Valor a ser fijado", "Bandaera a indicar si la operación es fijar o voltear" ],
 	"leafSetItalic"     : "Programáticamente fijar itálica",
-
+	
 	"mnemonicSetFontSize" : "FijarTamañoFuente",
 	"nameSetFontSize"     : "Fijar tamaño de fuente",
 	"childrenSetFontSize" : [ "Expresión", "Tamaño de fuente" ],
 	"leafSetFontSize"     : "Programáticamente fjar tamaño de fuente",
-
+	
 	"mnemonicSetFontSizeIncrement" : "FijarIncrementoTamañoFuente",
 	"nameSetFontSizeIncrement"     : "Fijar incremento en tamaño de fuente",
 	"childrenSetFontSizeIncrement" : [ "Expresión", "Incremento en tamaño de fuente" ],
 	"leafSetFontSizeIncrement"     : "Programáticamente fijar incremento en tamaño de fuente",
-
+	
 	"mnemonicSetFontName" : "FijarNombreFuente",
 	"nameSetFontName"     : "Fijar nombre de fuente",
 	"childrenSetFontName" : [ "Expresión", "Nombre de fuente" ],

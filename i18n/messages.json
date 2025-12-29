@@ -1,10 +1,10 @@
 {
 	"pathVisualization" : "Visualization",
-
+	
 	"nameCrossedOut"  : "Crossed out",
 	"childCrossedOut" : "Expression to crossed out",
 	"leafCrossedOut"  : "Crossed out",
-
+	
 	"nameMetrics"  : "Metrics",
 	"childMetrics" : "Expression to show its metrics",
 	"leafMetrics"  : "Metrics",
@@ -12,26 +12,26 @@
 	"nameInvisible"  : "Invisible",
 	"childInvisible" : "Expression to show as invisible",
 	"leafInvisible"  : "Invisible",
-
+	
 	"nameRectangle" : "An invisible rectangle",
-
+	
 	"mnemonicCreateRectangle" : "CreateRectangle",
 	"nameCreateRectangle"     : "Create rectangle",
 	"childrenCreateRectangle" : [ "Width", "Height", "Horizontal baseline", "Vertical baseline" ],
 	"leafCreateRectangle"     : "Create rectangle",
-
+	
 	"nameColor"   : "Color",
 	"leafColor"   : "Set color",
 	"actionColor" : "Set color ...",
-
+	
 	"nameBold"   : "Bold",
 	"leafBold"   : "Set bold",
 	"actionBold" : "Set bold ...",
-
+	
 	"nameItalic"   : "Italic",
 	"leafItalic"   : "Set italic",
 	"actionItalic" : "Set italic ...",
-
+	
 	"nameCode" : "Code",
 	"leafCode" : "Set as code",
 	
@@ -51,50 +51,108 @@
 	"childKey" : "Expression to show as key",
 	"leafKey"  : "Key",
 	
+	"nameSuperscript"  : "Superscript",
+	"leafSuperscript"  : "Superscript",
+	
+	"nameSubscript"  : "Subscript",
+	"leafSubscript"  : "Subscript",
+	
+	"nameHorizontalEllipsis" : "Horizontal ellipsis",
+	"leafHorizontalEllipsis" : "Horizontal ellipsis",
+	
+	"nameVerticalEllipsis" : "Vertical ellipsis",
+	"leafVerticalEllipsis" : "Vertical ellipsis",
+	
+	"nameUpRightDiagonalEllipsis" : "Uprigth diagonal ellipsis",
+	"leafUpRightDiagonalEllipsis" : "Uprigth diagonal ellipsis",
+	
+	"nameDownRightDiagonalEllipsis" : "Downright diagonal ellipsis",
+	"leafDownRightDiagonalEllipsis" : "Downright diagonal ellipsis",
+	
+	"namePlusMinus" : "Plus minus",
+	"leafPlusMinus" : "Plus minus",
+	
+	"nameMinusPlus" : "Minus plus",
+	"leafMinusPlus" : "Minus plus",
+	
+	"nameCongruent"    : "Congruent",
+	"leafCongruent"    : "Congruent",
+	"nameNotCongruent" : "Not congruent",
+	"leafNotCongruent" : "Not congruent",
+	
+	"nameFigureCongruent"    : "Figure congruent",
+	"leafFigureCongruent"    : "Figure congruent",
+	"nameNotFigureCongruent" : "Not figure congruent",
+	"leafNotFigureCongruent" : "Not figure congruent",
+	
+	"nameApproximatelyEquals"    : "Approximately equals",
+	"leafApproximatelyEquals"    : "Approximately equals",
+	"nameNotApproximatelyEquals" : "Not aproximately equals",
+	"leafNotApproximatelyEquals" : "Not approximately equals",
+	
+	"nameAsymptoticallyEquals"    : "Asymptotically equals",
+	"leafAsymptoticallyEquals"    : "Asymptotically equals",
+	"nameNotAsymptoticallyEquals" : "Not asymptotically equals",
+	"leafNotAsymptoticallyEquals" : "Not asymptotically equals",
+	
+	"nameProportional"    : "Proportional",
+	"leafProportional"    : "Proportional",
+	"nameNotProportional" : "Not proportional",
+	"leafNotProportional" : "Not proportional",
+	
+	"nameInfix"          : "Infix operation",
+	"enterInfixOperator" : "Enter infix operator",
+	"leafInfix"          : "Interactively create infix operation",
+	
+	"mnemonicCreateInfix" : "CreateInfix",
+	"nameCreateInfix"     : "Create operación infija",
+	"childrenCreateInfix" : [ "Operator", "List of operands" ],
+	"leafCreateInfix"     : "Programatically create infix operation",
+	
 	"nameFontSize"        : "Font size",
 	"messageFontSize"     : "Select font size",
 	"messageSizeFontSize" : "Font size",
 	"leafFontSize"        : "Set font size",
 	"actionFontSize"      : "Set font size ...",
-
+	
 	"nameFontSizeIncrement"             : "Font size increment",
 	"messageFontSizeIncrement"          : "Select font size increment",
 	"messageIncrementFontSizeIncrement" : "Increment",
 	"leafFontSizeIncrement"             : "Set font size increment",
 	"actionFontSizeIncrement"           : "Set font size increment ...",
-
+	
 	"nameFontName"    : "Font name",
 	"messageFontName" : "Set font name",
 	"leafFontName"    : "Set font name",
 	"actionFontName"  : "Set font name ...",
-
+	
 	"pathReflection" : "Visualization.Reflection",
-
+	
 	"mnemonicSetColor" : "SetColor",
 	"nameSetColor"     : "Set color",
 	"childrenSetColor" : [ "Expression", "Color" ],
 	"leafSetColor"     : "Programmatically set color",
-
+	
 	"mnemonicSetBold" : "SetBold",
 	"nameSetBold"     : "Set bold",
 	"childrenSetBold" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
 	"leafSetBold"     : "Programmatically set bold",
-
+	
 	"mnemonicSetItalic" : "SetItalic",
 	"nameSetItalic"     : "Set italic",
 	"childrenSetItalic" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
 	"leafSetItalic"     : "Programmatically set italic",
-
+	
 	"mnemonicSetFontSize" : "SetFontSize",
 	"nameSetFontSize"     : "Set font size",
 	"childrenSetFontSize" : [ "Expression", "Font size" ],
 	"leafSetFontSize"     : "Programmatically set font size",
-
+	
 	"mnemonicSetFontSizeIncrement" : "SetFontSizeIncrement",
 	"nameSetFontSizeIncrement"     : "Set font size increment",
 	"childrenSetFontSizeIncrement" : [ "Expression", "Font size increment" ],
 	"leafSetFontSizeIncrement"     : "Programmatically set font size increment",
-
+	
 	"mnemonicSetFontName" : "SetFontName",
 	"nameSetFontName"     : "Set font name",
 	"childrenSetFontName" : [ "Expression", "Font name" ],

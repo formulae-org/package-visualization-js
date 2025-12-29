@@ -966,6 +966,49 @@ Visualization.CodeBlock = class extends Expression.NullaryExpression {
 	}
 }
 
+Visualization.Infix = class extends Expression.Infix {
+	constructor() {
+		super();
+	}
+	
+	getTag() { return "Visualization.Infix"; }
+	
+	getName() { return Visualization.messages["nameInfix"]; }
+	
+	set(name, value) {
+		if (name === "Operator") {
+			this.operator = value;
+			return;
+		}
+		
+		super.set(name, value);
+	}
+	
+	get(name) {
+		if (name === "Operator") {
+			return this.operator;
+		}
+		
+		return super.get(name);
+	}
+	
+	getSerializationNames() {
+		return [ "Operator" ];
+	}
+	
+	async getSerializationStrings() {
+		return [ this.operator ];
+	}
+	
+	setSerializationStrings(strings, promises) {
+		this.set("Operator", strings[0]);
+	}
+	
+	getOperator() {
+		return this.operator;
+	}
+};
+
 Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.CrossedOut",      Visualization.CrossedOut);
 	Formulae.setExpression(module, "Visualization.Metrics",         Visualization.Metrics);
@@ -988,6 +1031,8 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.FontSizeIncrement", Visualization.FontSizeIncrement);
 	Formulae.setExpression(module, "Visualization.FontName",          Visualization.FontName);
 	
+	Formulae.setExpression(module, "Visualization.Infix", Visualization.Infix);
+	
 	// functions
 	[
 		[ "CreateRectangle",      4, 5 ],
@@ -996,7 +1041,8 @@ Visualization.setExpressions = function(module) {
 		[ "SetItalic",            1, 3 ],
 		[ "SetFontSize",          2, 2 ],
 		[ "SetFontSizeIncrement", 2, 2 ],
-		[ "SetFontName",          2, 2 ]
+		[ "SetFontName",          2, 2 ],
+		[ "CreateInfix",          2, 2 ]
 	].forEach(row => Formulae.setExpression(module, "Visualization." + row[0], {
 		clazz:        Expression.Function,
 		getTag:       () => "Visualization." + row[0],
@@ -1006,5 +1052,57 @@ Visualization.setExpressions = function(module) {
 		min:          row[1],
 		max:          row[2]
 	}));
+	
+	// superscript
+	Formulae.setExpression(module, "Visualization.Superscript", {
+		clazz:   Expression.Superscript,
+		getTag:  () => "Visualization.Superscript",
+		getName: () => Visualization.messages.nameSuperscript
+	});
+	
+	// subscript
+	Formulae.setExpression(module, "Visualization.Subscript", {
+		clazz:   Expression.Subscript,
+		getTag:  () => "Visualization.Subscript",
+		getName: () => Visualization.messages.nameSubscript
+	});
+	
+	// literal symbols
+	
+	[
+		[ "HorizontalEllipsis",        "⋯" ],
+		[ "VerticalEllipsis",          "⋮" ],
+		[ "UpRightDiagonalEllipsis",   "⋰" ],
+		[ "DownRightDiagonalEllipsis", "⋱" ]
+	].forEach(row => Formulae.setExpression(module, "Visualization." + row[0], {
+		clazz:      Expression.Literal,
+		getTag:     () => "Visualization." + row[0],
+		getLiteral: () => row[1],
+		getName:    () => Visualization.messages["name" + row[0]]
+	}));
+	
+	// infix operations
+	
+	[
+		[ "PlusMinus",               "±" ],
+		[ "MinusPlus",               "∓" ],
+		[ "Congruent",               "≡" ],
+		[ "NotCongruent",            "≢" ],
+		[ "FigureCongruent",         "≅" ],
+		[ "NotFigureCongruent",      "≆" ],
+		[ "ApproximatelyEquals",     "≈" ],
+		[ "NotApproximatelyEquals",  "≉" ],
+		[ "AsymptoticallyEquals",    "≃" ],
+		[ "NotAsymptoticallyEquals", "≄" ],
+		[ "Proportional",            "∼" ],
+		[ "NotProportional",         "≁" ],
+	].forEach(row => Formulae.setExpression(module, "Visualization." + row[0], {
+		clazz:       Expression.Infix,
+		getTag:      () => "Visualization." + row[0],
+		getOperator: () => row[1],
+		getName:     () => Visualization.messages["name" + row[0]]
+	}));
+	
+	
 };
 

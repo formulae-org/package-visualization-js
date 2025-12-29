@@ -367,6 +367,39 @@ Visualization.actionCodeBlock = {
 	}
 };
 
+Visualization.creationInfix = function() {
+	let operator = prompt(Visualization.messages.enterInfixOperator);
+	if (operator === null) return;
+	
+	let newExpression = Formulae.createExpression("Visualization.Infix");
+	newExpression.set("Operator", operator);
+	
+	Formulae.sExpression.replaceBy(newExpression);
+	newExpression.addChild(Formulae.sExpression);
+	newExpression.addChild(Formulae.createExpression("Null"));
+	
+	Formulae.sHandler.prepareDisplay();
+	Formulae.sHandler.display();
+	Formulae.setSelected(Formulae.sHandler, newExpression.children[1], false);
+};
+
+Visualization.actionInfix = {
+	isAvailableNow: () => Formulae.sHandler.type != Formulae.ROW_OUTPUT,
+	getDescription: () => "Edit infix operator...",
+	doAction: () => {
+		let operator = Formulae.sExpression.get("Operator");
+		operator = prompt(Visualization.messages.enterInfixOperator, operator);
+		
+		if (operator == null) return;
+		
+		Formulae.sExpression.set("Operator", operator);
+		
+		Formulae.sHandler.prepareDisplay();
+		Formulae.sHandler.display();
+		Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
+	}
+};
+
 Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCrossedOut"],      () => Expression.wrapperEdition("Visualization.CrossedOut"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafMetrics"],         () => Expression.wrapperEdition("Visualization.Metrics"));
@@ -376,6 +409,48 @@ Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafParentheses"],     () => Expression.wrapperEdition("Visualization.Parentheses"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSpurious"],        () => Expression.wrapperEdition("Visualization.Spurious"));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafKey"],             () => Expression.wrapperEdition("Visualization.Key"));
+	
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSuperscript"], () => Expression.binaryEdition("Visualization.Superscript"));
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSubscript"],   () => Expression.binaryEdition("Visualization.Subscript"));
+	
+	// literal symbols
+	
+	[
+		[ "HorizontalEllipsis",        "⋯" ],
+		[ "VerticalEllipsis",          "⋮" ],
+		[ "UpRightDiagonalEllipsis",   "⋰" ],
+		[ "DownRightDiagonalEllipsis", "⋱" ]
+	].forEach(row => Formulae.addEdition(
+		Visualization.messages["pathVisualization"],
+		null,
+		row[1] + " " + Visualization.messages["leaf" + row[0]],
+		() => Expression.replacingEdition("Visualization." + row[0])
+	));
+	
+	// infix operations
+	
+	[
+		[ "PlusMinus",               "±" ],
+		[ "MinusPlus",               "∓" ],
+		[ "Congruent",               "≡" ],
+		[ "NotCongruent",            "≢" ],
+		[ "FigureCongruent",         "≅" ],
+		[ "NotFigureCongruent",      "≆" ],
+		[ "ApproximatelyEquals",     "≈" ],
+		[ "NotApproximatelyEquals",  "≉" ],
+		[ "AsymptoticallyEquals",    "≃" ],
+		[ "NotAsymptoticallyEquals", "≄" ],
+		[ "Proportional",            "∼" ],
+		[ "NotProportional",         "≁" ],
+	].forEach(row => Formulae.addEdition(
+		Visualization.messages["pathVisualization"],
+		null,
+		row[1] + " " + Visualization.messages["leaf" + row[0]],
+		() => Expression.binaryEdition("Visualization." + row[0])
+	));
+	
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafInfix"], Visualization.creationInfix);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCreateInfix"],   () => Expression.binaryEdition("Visualization.CreateInfix"));
 	
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Horizontal array",                            () => Expression.binaryEdition  ("Visualization.HorizontalArray", false));
 	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Vertical array",                              () => Expression.binaryEdition  ("Visualization.VerticalArray", false));
@@ -405,5 +480,6 @@ Visualization.setActions = function() {
 	Formulae.addAction("Visualization.FontSizeIncrement", Visualization.actionFontSizeIncrement);
 	Formulae.addAction("Visualization.FontName",          Visualization.actionFontName);
 	Formulae.addAction("Visualization.CodeBlock",         Visualization.actionCodeBlock);
+	Formulae.addAction("Visualization.Infix",             Visualization.actionInfix);
 };
 

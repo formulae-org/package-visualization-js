@@ -160,6 +160,24 @@ Visualization.setFontName = async (setFontName, session) => {
 	return true;
 };
 
+Visualization.createInfix = async (createInfix, session) => {
+	let operator = createInfix.children[0];
+	if (operator.getTag() !== "String.String") return false;
+	
+	let operands = createInfix.children[1];
+	if (operands.children.length < 2) return false;
+	
+	let result = Formulae.createExpression("Visualization.Infix");
+	result.set("Operator", operator.get("Value"));
+	
+	for (let i = 0, n = operands.children.length; i < n; ++i) {
+		result.addChild(operands.children[i].clone());
+	}
+	
+	createInfix.replaceBy(result);
+	return true;
+};
+
 Visualization.setReducers = () => {
 	ReductionManager.addReducer("Visualization.CreateRectangle",      Visualization.createRectangle,         "Visualization.createRectangle");
 	ReductionManager.addReducer("Visualization.SetColor",             Visualization.setColor,                "Visualization.setColor");
@@ -168,4 +186,5 @@ Visualization.setReducers = () => {
 	ReductionManager.addReducer("Visualization.SetFontSize",          Visualization.setFontSizeAndIncrement, "Visualization.setFontSizeAndIncrement");
 	ReductionManager.addReducer("Visualization.SetFontSizeIncrement", Visualization.setFontSizeAndIncrement, "Visualization.setFontSizeAndIncrement");
 	ReductionManager.addReducer("Visualization.SetFontName",          Visualization.setFontName,             "Visualization.setFontName");
+	ReductionManager.addReducer("Visualization.CreateInfix",          Visualization.createInfix,             "Visualization.createInfix");
 };
