@@ -63,8 +63,8 @@
 	"nameVerticalEllipsis" : "Vertical ellipsis",
 	"leafVerticalEllipsis" : "Vertical ellipsis",
 	
-	"nameUpRightDiagonalEllipsis" : "Uprigth diagonal ellipsis",
-	"leafUpRightDiagonalEllipsis" : "Uprigth diagonal ellipsis",
+	"nameUpRightDiagonalEllipsis" : "Upright diagonal ellipsis",
+	"leafUpRightDiagonalEllipsis" : "Upright diagonal ellipsis",
 	
 	"nameDownRightDiagonalEllipsis" : "Downright diagonal ellipsis",
 	"leafDownRightDiagonalEllipsis" : "Downright diagonal ellipsis",
@@ -87,7 +87,7 @@
 	
 	"nameApproximatelyEquals"    : "Approximately equals",
 	"leafApproximatelyEquals"    : "Approximately equals",
-	"nameNotApproximatelyEquals" : "Not aproximately equals",
+	"nameNotApproximatelyEquals" : "Not approximately equals",
 	"leafNotApproximatelyEquals" : "Not approximately equals",
 	
 	"nameAsymptoticallyEquals"    : "Asymptotically equals",
@@ -105,9 +105,9 @@
 	"leafInfix"          : "Interactively create infix operation",
 	
 	"mnemonicCreateInfix" : "CreateInfix",
-	"nameCreateInfix"     : "Create operación infija",
+	"nameCreateInfix"     : "Create infix operation",
 	"childrenCreateInfix" : [ "Operator", "List of operands" ],
-	"leafCreateInfix"     : "Programatically create infix operation",
+	"leafCreateInfix"     : "Programmatically create infix operation",
 	
 	"nameFontSize"        : "Font size",
 	"messageFontSize"     : "Select font size",
@@ -135,12 +135,12 @@
 	
 	"mnemonicSetBold" : "SetBold",
 	"nameSetBold"     : "Set bold",
-	"childrenSetBold" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
+	"childrenSetBold" : [ "Expression", "Value to be set", "Flag to indicate if operation is set or turn" ],
 	"leafSetBold"     : "Programmatically set bold",
 	
 	"mnemonicSetItalic" : "SetItalic",
 	"nameSetItalic"     : "Set italic",
-	"childrenSetItalic" : [ "Expression", "Value to be set", "Flag to indicate if operation is set of turn" ],
+	"childrenSetItalic" : [ "Expression", "Value to be set", "Flag to indicate if operation is set or turn" ],
 	"leafSetItalic"     : "Programmatically set italic",
 	
 	"mnemonicSetFontSize" : "SetFontSize",
