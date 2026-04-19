@@ -1100,9 +1100,8 @@ Visualization.setExpressions = function(module) {
 		clazz:       Expression.Infix,
 		getTag:      () => "Visualization." + row[0],
 		getOperator: () => row[1],
-		getName:     () => Visualization.messages["name" + row[0]]
+		getName:     () => Visualization.messages["name" + row[0]],
+		min: 2, max: 2
 	}));
-	
-	
 };
 
