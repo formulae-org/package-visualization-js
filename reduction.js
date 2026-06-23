@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-'use strict';
+"use strict";
 
 export class Visualization extends Formulae.Package {}
 
@@ -90,7 +90,7 @@ Visualization.setBoldItalic = async (setBoldItalic, session) => {
 			throw new ReductionError();
 		}
 	}
-		
+	
 	let set = true;
 	if (setBoldItalic.children.length >= 3) {
 		let setExpression = setBoldItalic.children[2];

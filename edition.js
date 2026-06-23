@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-'use strict';
+"use strict";
 
 export class Visualization extends Formulae.Package {}
 
@@ -51,7 +51,7 @@ Visualization.actionColor = {
 				Formulae.sExpression.set("Green", g);
 				Formulae.sExpression.set("Blue",  b);
 				Formulae.sExpression.set("Alpha", o);
-
+				
 				Formulae.sHandler.prepareDisplay();
 				Formulae.sHandler.display();
 				Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
@@ -112,10 +112,10 @@ Visualization.editionBold = function() {
 			let newExpression = Formulae.createExpression("Visualization.Bold");
 			newExpression.set("Value", v);
 			newExpression.set("Set", s);
-
+			
 			Formulae.sExpression.replaceBy(newExpression);
 			newExpression.addChild(Formulae.sExpression);
-
+			
 			Formulae.sHandler.prepareDisplay();
 			Formulae.sHandler.display();
 			Formulae.setSelected(Formulae.sHandler, newExpression, false);
@@ -133,7 +133,7 @@ Visualization.actionBold = {
 			(v, s) => {
 				Formulae.sExpression.set("Value", v);
 				Formulae.sExpression.set("Set", s);
-
+				
 				Formulae.sHandler.prepareDisplay();
 				Formulae.sHandler.display();
 				Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
@@ -150,10 +150,10 @@ Visualization.editionItalic = function() {
 			let newExpression = Formulae.createExpression("Visualization.Italic");
 			newExpression.set("Value", v);
 			newExpression.set("Set", s);
-
+			
 			Formulae.sExpression.replaceBy(newExpression);
 			newExpression.addChild(Formulae.sExpression);
-
+			
 			Formulae.sHandler.prepareDisplay();
 			Formulae.sHandler.display();
 			Formulae.setSelected(Formulae.sHandler, newExpression, false);
@@ -171,7 +171,7 @@ Visualization.actionItalic = {
 			(v, s) => {
 				Formulae.sExpression.set("Value", v);
 				Formulae.sExpression.set("Set", s);
-
+				
 				Formulae.sHandler.prepareDisplay();
 				Formulae.sHandler.display();
 				Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
@@ -190,10 +190,10 @@ Visualization.editionFontSize = function() {
 		size => {
 			let newExpression = Formulae.createExpression("Visualization.FontSize");
 			newExpression.set("Size", size);
-
+			
 			Formulae.sExpression.replaceBy(newExpression);
 			newExpression.addChild(Formulae.sExpression);
-
+			
 			Formulae.sHandler.prepareDisplay();
 			Formulae.sHandler.display();
 			Formulae.setSelected(Formulae.sHandler, newExpression, false);
@@ -213,7 +213,7 @@ Visualization.actionFontSize = {
 			Formulae.sExpression.get("Size"),
 			newSize => {
 				Formulae.sExpression.set("Size", newSize);
-
+				
 				Formulae.sHandler.prepareDisplay();
 				Formulae.sHandler.display();
 				Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
@@ -232,10 +232,10 @@ Visualization.editionFontSizeIncrement = function() {
 		increment => {
 			let newExpression = Formulae.createExpression("Visualization.FontSizeIncrement");
 			newExpression.set("Increment", increment);
-
+			
 			Formulae.sExpression.replaceBy(newExpression);
 			newExpression.addChild(Formulae.sExpression);
-
+			
 			Formulae.sHandler.prepareDisplay();
 			Formulae.sHandler.display();
 			Formulae.setSelected(Formulae.sHandler, newExpression, false);
@@ -255,7 +255,7 @@ Visualization.actionFontSizeIncrement = {
 			Formulae.sExpression.get("Increment"),
 			increment => {
 				Formulae.sExpression.set("Increment", increment);
-
+				
 				Formulae.sHandler.prepareDisplay();
 				Formulae.sHandler.display();
 				Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
@@ -266,20 +266,20 @@ Visualization.actionFontSizeIncrement = {
 
 Visualization.editionFontName = function() {
 	let s = "";
-
+	
 	do {
 		s = prompt(Visualization.messages["messageFontName"], s);
 	}
 	while (s != null && s == "")
 	
 	if (s == null) return;
-
+	
 	let newExpression = Formulae.createExpression("Visualization.FontName");
 	newExpression.set("Name", s);
-
+	
 	Formulae.sExpression.replaceBy(newExpression);
 	newExpression.addChild(Formulae.sExpression);
-
+	
 	Formulae.sHandler.prepareDisplay();
 	Formulae.sHandler.display();
 	Formulae.setSelected(Formulae.sHandler, newExpression, false);
@@ -290,16 +290,16 @@ Visualization.actionFontName = {
 	getDescription: () => Visualization.messages["actionFontName"],
 	doAction: () => {
 		let s = Formulae.sExpression.get("Name");
-
+		
 		do {
 			s = prompt(Visualization.messages["EnterNumber"], s);
 		}
 		while (s != null && s == "")
 		
 		if (s == null) return;
-
+		
 		Formulae.sExpression.set("Name", s);
-
+		
 		Formulae.sHandler.prepareDisplay();
 		Formulae.sHandler.display();
 		Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);

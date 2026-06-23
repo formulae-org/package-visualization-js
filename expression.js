@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-'use strict';
+"use strict";
 
 export class Visualization extends Formulae.Package {}
 
@@ -410,16 +410,16 @@ Visualization.Bold = class extends Expression.UnaryExpression {
 	
 	display(context, x, y) {
 		let bkp = context.fontInfo.bold;
-
+		
 		if (this.isSet) {
 			context.fontInfo.setBold(context, this.value);
 		}
 		else if (this.value) {
 			context.fontInfo.setBold(context, !bkp);
 		}
-
+		
 		this.children[0].display(context, x, y);
-
+		
 		context.fontInfo.setBold(context, bkp);
 	}
 };
@@ -427,13 +427,13 @@ Visualization.Bold = class extends Expression.UnaryExpression {
 Visualization.Italic = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.Italic"; }
 	getName() { return Visualization.messages["nameItalic"]; }
-
+	
 	set(name, value) {
 		switch (name) {
 			case "Value" : this.value = value; return;
 			case "Set"   : this.isSet = value; return;
 		}
-
+		
 		super.set(name, value);
 	}
 	
@@ -442,7 +442,7 @@ Visualization.Italic = class extends Expression.UnaryExpression {
 			case "Value" : return this.value;
 			case "Set"   : return this.isSet;
 		}
-
+		
 		super.get(name);
 	}
 	
@@ -472,18 +472,18 @@ Visualization.Italic = class extends Expression.UnaryExpression {
 		let child = this.children[0];
 		
 		let bkp = context.fontInfo.italic;
-
+		
 		if (this.isSet) {
 			context.fontInfo.setItalic(context, this.value);
 		}
 		else if (this.value) {
 			context.fontInfo.setItalic(context, !bkp);
 		}
-
+		
 		child.prepareDisplay(context);
-
+		
 		context.fontInfo.setItalic(context, bkp);
-
+		
 		child.x = child.y = 0;
 		this.width = child.width;
 		this.height = child.height;
@@ -493,16 +493,16 @@ Visualization.Italic = class extends Expression.UnaryExpression {
 	
 	display(context, x, y) {
 		let bkp = context.fontInfo.italic;
-
+		
 		if (this.isSet) {
 			context.fontInfo.setItalic(context, this.value);
 		}
 		else if (this.value) {
 			context.fontInfo.setItalic(context, !bkp);
 		}
-
+		
 		this.children[0].display(context, x, y);
-
+		
 		context.fontInfo.setItalic(context, bkp);
 	}
 };
@@ -562,7 +562,7 @@ Visualization.Code = class extends Expression.UnaryExpression {
 Visualization.FontSize = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.FontSize"; }
 	getName() { return Visualization.messages["nameFontSize"]; }
-
+	
 	set(name, value) {
 		if (name == "Size") {
 			this.size = value;
@@ -598,11 +598,11 @@ Visualization.FontSize = class extends Expression.UnaryExpression {
 		
 		let bkp = context.fontInfo.size;
 		context.fontInfo.setSizeAbsolute(context, this.size);
-
+		
 		child.prepareDisplay(context);
-
+		
 		context.fontInfo.setSizeAbsolute(context, bkp);
-
+		
 		child.x = child.y = 0;
 		this.width = child.width;
 		this.height = child.height;
@@ -613,9 +613,9 @@ Visualization.FontSize = class extends Expression.UnaryExpression {
 	display(context, x, y) {
 		let bkp = context.fontInfo.size;
 		context.fontInfo.setSizeAbsolute(context, this.size);
-
+		
 		this.children[0].display(context, x, y);
-
+		
 		context.fontInfo.setSizeAbsolute(context, bkp);
 	}
 };
@@ -623,7 +623,7 @@ Visualization.FontSize = class extends Expression.UnaryExpression {
 Visualization.FontSizeIncrement = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.FontSizeIncrement"; }
 	getName() { return Visualization.messages["nameFontSizeIncrement"]; }
-
+	
 	set(name, value) {
 		if (name == "Increment") {
 			this.increment = value;
@@ -674,9 +674,9 @@ Visualization.FontSizeIncrement = class extends Expression.UnaryExpression {
 	display(context, x, y) {
 		let bkp = context.fontInfo.size;
 		context.fontInfo.setSizeRelative(context, this.increment);
-
+		
 		this.children[0].display(context, x, y);
-
+		
 		context.fontInfo.setSizeAbsolute(context, bkp);
 	}
 };
@@ -684,7 +684,7 @@ Visualization.FontSizeIncrement = class extends Expression.UnaryExpression {
 Visualization.FontName = class extends Expression.UnaryExpression {
 	getTag() { return "Visualization.FontName"; }
 	getName() { return Visualization.messages["nameFontName"]; }
-
+	
 	set(name, value) {
 		if (name == "Name") {
 			this.fontName = value;
@@ -719,11 +719,11 @@ Visualization.FontName = class extends Expression.UnaryExpression {
 		
 		let bkp = context.fontInfo.name;
 		context.fontInfo.setName(context, this.fontName);
-
+		
 		child.prepareDisplay(context);
-
+		
 		context.fontInfo.setName(context, bkp);
-
+		
 		child.x = child.y = 0;
 		this.width = child.width;
 		this.height = child.height;
@@ -734,9 +734,9 @@ Visualization.FontName = class extends Expression.UnaryExpression {
 	display(context, x, y) {
 		let bkp = context.fontInfo.name;
 		context.fontInfo.setName(context, this.fontName);
-
+		
 		this.children[0].display(context, x, y);
-
+		
 		context.fontInfo.setName(context, bkp);
 	}
 };
