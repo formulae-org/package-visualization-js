@@ -108,7 +108,10 @@
 	"nameCreateInfix"     : "Crea operación infija",
 	"childrenCreateInfix" : [ "Operador", "Lista de operandos" ],
 	"leafCreateInfix"     : "Programáticamente crea operacion infija",
-	
+
+	"leafHorizontalArray" : "Arreglo horizontal",
+	"leafVerticalArray"   : "Arreglo vertical",
+
 	"nameFontSize"        : "Tamaño de fuente",
 	"messageFontSize"     : "Seleccione tamaño de fuente",
 	"messageSizeFontSize" : "Tamaño de fuente",
@@ -159,6 +162,8 @@
 	"leafSetFontName"     : "Programáticamente fijar nombre de fuente",
 	
 	"nameCodeBlock"     : "Bloque de código",
-	"leafCodeBlock"     : "Bloque de código"
-}
+	"leafCodeBlock"     : "Bloque de código",
+	"actionCodeBlock"   : "Editar bloque de código...",
 
+	"actionEditInfixOperator" : "Editar operador infijo..."
+}

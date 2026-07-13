@@ -108,7 +108,10 @@
 	"nameCreateInfix"     : "Create infix operation",
 	"childrenCreateInfix" : [ "Operator", "List of operands" ],
 	"leafCreateInfix"     : "Programmatically create infix operation",
-	
+
+	"leafHorizontalArray" : "Horizontal array",
+	"leafVerticalArray"   : "Vertical array",
+
 	"nameFontSize"        : "Font size",
 	"messageFontSize"     : "Select font size",
 	"messageSizeFontSize" : "Font size",
@@ -159,6 +162,8 @@
 	"leafSetFontName"     : "Programmatically set font name",
 	
 	"nameCodeBlock"     : "Code block",
-	"leafCodeBlock"     : "Code block"
-}
+	"leafCodeBlock"     : "Code block",
+	"actionCodeBlock"   : "Edit code block...",
 
+	"actionEditInfixOperator" : "Edit infix operator..."
+}

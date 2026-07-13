@@ -292,7 +292,7 @@ Visualization.actionFontName = {
 		let s = Formulae.sExpression.get("Name");
 		
 		do {
-			s = prompt(Visualization.messages["EnterNumber"], s);
+			s = prompt(Visualization.messages["messageFontName"], s);
 		}
 		while (s != null && s == "")
 		
@@ -352,7 +352,7 @@ Visualization.editionCodeBlock = function() {
 
 Visualization.actionCodeBlock = {
 	isAvailableNow: () => Formulae.sHandler.type != Formulae.ROW_OUTPUT,
-	getDescription: () => Visualization.messages["actionFontName"],
+	getDescription: () => Visualization.messages["actionCodeBlock"],
 	doAction: () => {
 		Visualization.codeBlockSelection(
 			Formulae.sExpression.get("Value"),
@@ -385,7 +385,7 @@ Visualization.creationInfix = function() {
 
 Visualization.actionInfix = {
 	isAvailableNow: () => Formulae.sHandler.type != Formulae.ROW_OUTPUT,
-	getDescription: () => "Edit infix operator...",
+	getDescription: () => Visualization.messages.actionEditInfixOperator,
 	doAction: () => {
 		let operator = Formulae.sExpression.get("Operator");
 		operator = prompt(Visualization.messages.enterInfixOperator, operator);
@@ -401,20 +401,26 @@ Visualization.actionInfix = {
 };
 
 Visualization.setEditions = function() {
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCrossedOut"],      () => Expression.wrapperEdition("Visualization.CrossedOut"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafMetrics"],         () => Expression.wrapperEdition("Visualization.Metrics"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafInvisible"],       () => Expression.wrapperEdition("Visualization.Invisible"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCreateRectangle"], () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSelected"],        () => Expression.wrapperEdition("Visualization.Selected"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafParentheses"],     () => Expression.wrapperEdition("Visualization.Parentheses"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSpurious"],        () => Expression.wrapperEdition("Visualization.Spurious"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafKey"],             () => Expression.wrapperEdition("Visualization.Key"));
-	
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSuperscript"], () => Expression.binaryEdition("Visualization.Superscript"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafSubscript"],   () => Expression.binaryEdition("Visualization.Subscript"));
-	
-	// literal symbols
-	
+
+	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "CrossedOut", "Metrics" ]);
+
+	// Invisible renders with no visible difference from (literally nothing of) its child, so no icon can preview it
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafInvisible"], Visualization.messages["leafInvisible"], () => Expression.wrapperEdition("Visualization.Invisible"));
+
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Formulae.icon("Visualization.CreateRectangle", 4), Visualization.messages["leafCreateRectangle"], () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
+
+	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "Selected", "Parentheses" ]);
+
+	// Spurious renders with no visible difference from its child, so no icon can preview it
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafSpurious"], Visualization.messages["leafSpurious"], () => Expression.wrapperEdition("Visualization.Spurious"));
+
+	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "Key" ]);
+
+	Formulae.addBinaryEdition(Visualization.messages, "Visualization", "Superscript", "Visualization.Superscript");
+	Formulae.addBinaryEdition(Visualization.messages, "Visualization", "Subscript",   "Visualization.Subscript");
+
+	// literal symbols — simple glyphs are plain text, like arithmetic's π/e/∞
+
 	[
 		[ "HorizontalEllipsis",        "⋯" ],
 		[ "VerticalEllipsis",          "⋮" ],
@@ -422,13 +428,13 @@ Visualization.setEditions = function() {
 		[ "DownRightDiagonalEllipsis", "⋱" ]
 	].forEach(row => Formulae.addEdition(
 		Visualization.messages["pathVisualization"],
-		null,
-		row[1] + " " + Visualization.messages["leaf" + row[0]],
+		row[1],
+		Visualization.messages["leaf" + row[0]],
 		() => Expression.replacingEdition("Visualization." + row[0])
 	));
-	
-	// infix operations
-	
+
+	// infix operations — real Expression.Infix instances, so the icon shows the actual operator glyph
+
 	[
 		[ "PlusMinus",               "±" ],
 		[ "MinusPlus",               "∓" ],
@@ -442,34 +448,35 @@ Visualization.setEditions = function() {
 		[ "NotAsymptoticallyEquals", "≄" ],
 		[ "Proportional",            "∼" ],
 		[ "NotProportional",         "≁" ],
-	].forEach(row => Formulae.addEdition(
-		Visualization.messages["pathVisualization"],
-		null,
-		row[1] + " " + Visualization.messages["leaf" + row[0]],
-		() => Expression.binaryEdition("Visualization." + row[0])
-	));
-	
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafInfix"], Visualization.creationInfix);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCreateInfix"],   () => Expression.binaryEdition("Visualization.CreateInfix"));
-	
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Horizontal array",                            () => Expression.binaryEdition  ("Visualization.HorizontalArray", false));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, "Vertical array",                              () => Expression.binaryEdition  ("Visualization.VerticalArray", false));
-	
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafColor"],             Visualization.editionColor);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafBold"],              Visualization.editionBold);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafItalic"],            Visualization.editionItalic);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCode"],              () => Expression.wrapperEdition("Visualization.Code"));
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontSize"],          Visualization.editionFontSize);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontSizeIncrement"], Visualization.editionFontSizeIncrement);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafFontName"],          Visualization.editionFontName);
-	Formulae.addEdition(Visualization.messages["pathVisualization"], null, Visualization.messages["leafCodeBlock"],         Visualization.editionCodeBlock);
-	
-	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetColor"],             () => Expression.binaryEdition ("Visualization.SetColor",             true));
-	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetBold"],              () => Expression.wrapperEdition("Visualization.SetBold"));
-	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetItalic"],            () => Expression.wrapperEdition("Visualization.SetItalic"));
-	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetFontSize"],          () => Expression.binaryEdition ("Visualization.SetFontSize",          true));
-	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetFontSizeIncrement"], () => Expression.binaryEdition ("Visualization.SetFontSizeIncrement", true));
-	Formulae.addEdition(Visualization.messages["pathReflection"], null, Visualization.messages["leafSetFontName"],          () => Expression.binaryEdition ("Visualization.SetFontName",          true));
+	].forEach(row => Formulae.addBinaryEdition(Visualization.messages, "Visualization", row[0], "Visualization." + row[0]));
+
+	// Infix: operator is prompted (unknown until entered), like Number/Symbol
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafInfix"], Visualization.messages["leafInfix"], Visualization.creationInfix);
+	// CreateInfix: selection naturally belongs among the operands (child1), not the prompted-string Operator slot (child0) — bugfix, see DONE.md
+	Formulae.addBinaryEdition(Visualization.messages, "Visualization", "CreateInfix", "Visualization.CreateInfix", false);
+
+	Formulae.addBinaryEdition(Visualization.messages, "Visualization", "HorizontalArray", "Visualization.HorizontalArray");
+	Formulae.addBinaryEdition(Visualization.messages, "Visualization", "VerticalArray",   "Visualization.VerticalArray");
+
+	// Prompted creators/dialogs with multiple or unbounded possible outcomes: no single icon could represent them, like Number/Time
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafColor"],             Visualization.messages["leafColor"],             Visualization.editionColor);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafBold"],              Visualization.messages["leafBold"],              Visualization.editionBold);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafItalic"],            Visualization.messages["leafItalic"],            Visualization.editionItalic);
+
+	// Code has no prompt and applies its style directly (no paragraph-context trick needed), so its icon shows a genuine bold-monospace preview
+	Formulae.addEdition(Visualization.messages["pathVisualization"], '<expression tag="Visualization.Code"><expression tag="Visualization.Selected"><expression tag="String.Text" Value="x"/></expression></expression>', Visualization.messages["leafCode"], () => Expression.wrapperEdition("Visualization.Code"));
+
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafFontSize"],          Visualization.messages["leafFontSize"],          Visualization.editionFontSize);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafFontSizeIncrement"], Visualization.messages["leafFontSizeIncrement"], Visualization.editionFontSizeIncrement);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafFontName"],          Visualization.messages["leafFontName"],          Visualization.editionFontName);
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafCodeBlock"],         Visualization.messages["leafCodeBlock"],         Visualization.editionCodeBlock);
+
+	// SetColor/SetFontSize/SetFontSizeIncrement/SetFontName: selection belongs in the "Expression" (target) slot, not the "value" slot — bugfix, see DONE.md
+	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetColor", "Visualization.SetColor");
+	Formulae.addWrapperEditions(Visualization.messages, "Reflection", "Visualization", [ "SetBold", "SetItalic" ]);
+	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetFontSize",          "Visualization.SetFontSize");
+	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetFontSizeIncrement", "Visualization.SetFontSizeIncrement");
+	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetFontName",          "Visualization.SetFontName");
 };
 
 Visualization.setActions = function() {
