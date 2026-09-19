@@ -401,7 +401,6 @@ Visualization.actionInfix = {
 };
 
 Visualization.setEditions = function() {
-
 	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "CrossedOut", "Metrics" ]);
 
 	// Invisible renders with no visible difference from (literally nothing of) its child, so no icon can preview it
@@ -413,8 +412,36 @@ Visualization.setEditions = function() {
 
 	// Spurious renders with no visible difference from its child, so no icon can preview it
 	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafSpurious"], Visualization.messages["leafSpurious"], () => Expression.wrapperEdition("Visualization.Spurious"));
-
+	
 	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "Key" ]);
+	
+	// Baselines. addWrapperEditions cannot be used: its generated icon renders the expression
+	// around a selected Null, which for these wrappers is indistinguishable from Invisible's and
+	// Spurious's useless icons — they render exactly like their child. The icons below instead
+	// put two elements of differing size side by side, both wrapped, so each icon shows the
+	// alignment its edition actually produces: a VerticalArray of two texts of different WIDTH
+	// for the vertical family, and a HorizontalArray of two elements of different HEIGHT for the
+	// horizontal one.
+	
+	[ "Left", "Center", "Right" ].forEach(suffix => {
+		let tag = "Visualization.VerticalBaselineAt" + suffix;
+		Formulae.addEdition(
+			Visualization.messages["pathBaselines"],
+			Visualization.messages["leafVerticalBaselineAt" + suffix],
+			Visualization.messages["leafVerticalBaselineAt" + suffix],
+			() => Expression.wrapperEdition(tag)
+		);
+	});
+	
+	[ "Top", "Middle", "Bottom" ].forEach(suffix => {
+		let tag = "Visualization.HorizontalBaselineAt" + suffix;
+		Formulae.addEdition(
+			Visualization.messages["pathBaselines"],
+			Visualization.messages["leafHorizontalBaselineAt" + suffix],
+			Visualization.messages["leafHorizontalBaselineAt" + suffix],
+			() => Expression.wrapperEdition(tag)
+		);
+	});
 
 	Formulae.addBinaryEdition(Visualization.messages, "Visualization", "Superscript", "Visualization.Superscript");
 	Formulae.addBinaryEdition(Visualization.messages, "Visualization", "Subscript",   "Visualization.Subscript");

@@ -1,5 +1,6 @@
 {
 	"pathVisualization" : "Visualization",
+	"pathBaselines"     : "Visualization.Baselines",
 	
 	"nameCrossedOut"  : "Crossed out",
 	"childCrossedOut" : "Expression to crossed out",
@@ -13,8 +14,32 @@
 	"childInvisible" : "Expression to show as invisible",
 	"leafInvisible"  : "Invisible",
 	
-	"nameRectangle" : "An invisible rectangle",
+	"nameVerticalBaselineAtLeft"  : "Vertical baseline at left",
+	"childVerticalBaselineAtLeft" : "Expression whose vertical baseline is placed at its left edge",
+	"leafVerticalBaselineAtLeft"  : "Vertical baseline at left",
 	
+	"nameVerticalBaselineAtCenter"  : "Vertical baseline at center",
+	"childVerticalBaselineAtCenter" : "Expression whose vertical baseline is placed at its horizontal center",
+	"leafVerticalBaselineAtCenter"  : "Vertical baseline at center",
+	
+	"nameVerticalBaselineAtRight"  : "Vertical baseline at right",
+	"childVerticalBaselineAtRight" : "Expression whose vertical baseline is placed at its right edge",
+	"leafVerticalBaselineAtRight"  : "Vertical baseline at right",
+	
+	"nameHorizontalBaselineAtTop"  : "Horizontal baseline at top",
+	"childHorizontalBaselineAtTop" : "Expression whose horizontal baseline is placed at its top edge",
+	"leafHorizontalBaselineAtTop"  : "Horizontal baseline at top",
+	
+	"nameHorizontalBaselineAtMiddle"  : "Horizontal baseline at middle",
+	"childHorizontalBaselineAtMiddle" : "Expression whose horizontal baseline is placed at its vertical middle",
+	"leafHorizontalBaselineAtMiddle"  : "Horizontal baseline at middle",
+	
+	"nameHorizontalBaselineAtBottom"  : "Horizontal baseline at bottom",
+	"childHorizontalBaselineAtBottom" : "Expression whose horizontal baseline is placed at its bottom edge",
+	"leafHorizontalBaselineAtBottom"  : "Horizontal baseline at bottom",
+	
+	"nameRectangle" : "An invisible rectangle",
+
 	"mnemonicCreateRectangle" : "CreateRectangle",
 	"nameCreateRectangle"     : "Create rectangle",
 	"childrenCreateRectangle" : [ "Width", "Height", "Horizontal baseline", "Vertical baseline" ],

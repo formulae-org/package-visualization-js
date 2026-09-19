@@ -1,5 +1,6 @@
 {
 	"pathVisualization" : "Visualización",
+	"pathBaselines"     : "Visualización.Líneas base",
 	
 	"nameCrossedOut"  : "Tachado",
 	"childCrossedOut" : "Expresión a tachar",
@@ -13,8 +14,32 @@
 	"childInvisible" : "Expression a ser mostrada como invisible",
 	"leafInvisible"  : "Invisible",
 	
-	"nameRectangle" : "Un rectángulo invisible",
+	"nameVerticalBaselineAtLeft"  : "Línea base vertical a la izquierda",
+	"childVerticalBaselineAtLeft" : "Expresión cuya línea base vertical se coloca en su borde izquierdo",
+	"leafVerticalBaselineAtLeft"  : "Línea base vertical a la izquierda",
 	
+	"nameVerticalBaselineAtCenter"  : "Línea base vertical al centro",
+	"childVerticalBaselineAtCenter" : "Expresión cuya línea base vertical se coloca en su centro horizontal",
+	"leafVerticalBaselineAtCenter"  : "Línea base vertical al centro",
+	
+	"nameVerticalBaselineAtRight"  : "Línea base vertical a la derecha",
+	"childVerticalBaselineAtRight" : "Expresión cuya línea base vertical se coloca en su borde derecho",
+	"leafVerticalBaselineAtRight"  : "Línea base vertical a la derecha",
+	
+	"nameHorizontalBaselineAtTop"  : "Línea base horizontal arriba",
+	"childHorizontalBaselineAtTop" : "Expresión cuya línea base horizontal se coloca en su borde superior",
+	"leafHorizontalBaselineAtTop"  : "Línea base horizontal arriba",
+	
+	"nameHorizontalBaselineAtMiddle"  : "Línea base horizontal en medio",
+	"childHorizontalBaselineAtMiddle" : "Expresión cuya línea base horizontal se coloca en su centro vertical",
+	"leafHorizontalBaselineAtMiddle"  : "Línea base horizontal en medio",
+	
+	"nameHorizontalBaselineAtBottom"  : "Línea base horizontal abajo",
+	"childHorizontalBaselineAtBottom" : "Expresión cuya línea base horizontal se coloca en su borde inferior",
+	"leafHorizontalBaselineAtBottom"  : "Línea base horizontal abajo",
+	
+	"nameRectangle" : "Un rectángulo invisible",
+
 	"mnemonicCreateRectangle" : "CrearRectángulo",
 	"nameCreateRectangle"     : "Crear rectángulo",
 	"childrenCreateRectangle" : [ "Ancho", "Alto", "Línea base horizontal", "Línea base vertical" ],

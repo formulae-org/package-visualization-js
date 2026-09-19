@@ -112,6 +112,69 @@ Visualization.Invisible = class extends Expression.UnaryExpression {
 	display(context, x, y) {}
 }
 
+// Two mirrored families of wrappers, each preserving its subexpression's dimensions and
+// redeclaring one of its two baselines. They are invisible everywhere except in contexts
+// that align on the baseline they redeclare.
+//
+// The vertical family acts on matrix/table COLUMNS (Expression.prepareDisplayAsMatrix) and
+// on Visualization.VerticalArray: wrapping every element of a column makes it flush left,
+// centered or flush right.
+//
+// The horizontal family acts on matrix/table ROWS and on Visualization.HorizontalArray:
+// wrapping every element of a row makes it top-, middle- or bottom-aligned.
+
+const verticalBaselineAt = (suffix, baseline) => class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.VerticalBaselineAt" + suffix; }
+	getName() { return Visualization.messages["nameVerticalBaselineAt" + suffix]; }
+	getChildName(index) { return Visualization.messages["childVerticalBaselineAt" + suffix]; }
+
+	prepareDisplay(context) {
+		let child = this.children[0];
+
+		child.prepareDisplay(context);
+
+		child.x = child.y = 0;
+		this.width = child.width;
+		this.height = child.height;
+		this.horzBaseline = child.horzBaseline;
+		this.vertBaseline = baseline(this.width);
+	}
+
+	display(context, x, y) {
+		this.children[0].display(context, x, y);
+	}
+};
+
+Visualization.VerticalBaselineAtLeft   = verticalBaselineAt("Left",   width => 0);
+Visualization.VerticalBaselineAtCenter = verticalBaselineAt("Center", width => Math.round(width / 2));
+Visualization.VerticalBaselineAtRight  = verticalBaselineAt("Right",  width => width);
+
+const horizontalBaselineAt = (suffix, baseline) => class extends Expression.UnaryExpression {
+	getTag() { return "Visualization.HorizontalBaselineAt" + suffix; }
+	getName() { return Visualization.messages["nameHorizontalBaselineAt" + suffix]; }
+	getChildName(index) { return Visualization.messages["childHorizontalBaselineAt" + suffix]; }
+
+	prepareDisplay(context) {
+		let child = this.children[0];
+
+		child.prepareDisplay(context);
+
+		child.x = child.y = 0;
+		this.width = child.width;
+		this.height = child.height;
+		this.vertBaseline = child.vertBaseline;
+		this.horzBaseline = baseline(this.height);
+	}
+
+	display(context, x, y) {
+		this.children[0].display(context, x, y);
+	}
+};
+
+Visualization.HorizontalBaselineAtTop    = horizontalBaselineAt("Top",    height => 0);
+Visualization.HorizontalBaselineAtMiddle = horizontalBaselineAt("Middle", height => Math.round(height / 2));
+Visualization.HorizontalBaselineAtBottom = horizontalBaselineAt("Bottom", height => height);
+
 Visualization.Rectangle = class extends Expression.NullaryExpression {
 	getTag() { return "Visualization.Rectangle"; }
 	getName() { return Visualization.messages["nameRectangle"]; }
@@ -1016,7 +1079,15 @@ Visualization.setExpressions = function(module) {
 	Formulae.setExpression(module, "Visualization.Rectangle",       Visualization.Rectangle);
 	Formulae.setExpression(module, "Visualization.HorizontalArray", Visualization.HorizontalArray);
 	Formulae.setExpression(module, "Visualization.VerticalArray",   Visualization.VerticalArray);
-	
+
+	Formulae.setExpression(module, "Visualization.VerticalBaselineAtLeft",   Visualization.VerticalBaselineAtLeft);
+	Formulae.setExpression(module, "Visualization.VerticalBaselineAtCenter", Visualization.VerticalBaselineAtCenter);
+	Formulae.setExpression(module, "Visualization.VerticalBaselineAtRight",  Visualization.VerticalBaselineAtRight);
+
+	Formulae.setExpression(module, "Visualization.HorizontalBaselineAtTop",    Visualization.HorizontalBaselineAtTop);
+	Formulae.setExpression(module, "Visualization.HorizontalBaselineAtMiddle", Visualization.HorizontalBaselineAtMiddle);
+	Formulae.setExpression(module, "Visualization.HorizontalBaselineAtBottom", Visualization.HorizontalBaselineAtBottom);
+
 	Formulae.setExpression(module, "Visualization.Color",       Visualization.Color);
 	Formulae.setExpression(module, "Visualization.Bold",        Visualization.Bold);
 	Formulae.setExpression(module, "Visualization.Italic",      Visualization.Italic);
