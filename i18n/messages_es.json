@@ -39,11 +39,19 @@
 	"leafHorizontalBaselineAtBottom"  : "Línea base horizontal abajo",
 	
 	"nameRectangle" : "Un rectángulo invisible",
+	"leafRectangle" : "Rectángulo",
+
+	"actionRectangle"                   : "Editar métricas del rectángulo ...",
+	"messageRectangle"                  : "Rectángulo invisible",
+	"placeholderRectangleBaseline"      : "centrado",
+	"errorRectangleWidth"               : "El ancho debe ser un entero positivo",
+	"errorRectangleHeight"              : "El alto debe ser un entero positivo",
+	"errorRectangleHorizontalBaseline"  : "La línea base horizontal debe estar vacía, o ser un entero entre 0 y el alto",
+	"errorRectangleVerticalBaseline"    : "La línea base vertical debe estar vacía, o ser un entero entre 0 y el ancho",
 
 	"mnemonicCreateRectangle" : "CrearRectángulo",
 	"nameCreateRectangle"     : "Crear rectángulo",
 	"childrenCreateRectangle" : [ "Ancho", "Alto", "Línea base horizontal", "Línea base vertical" ],
-	"leafCreateRectangle"     : "Crear rectángulo",
 	
 	"nameColor"   : "Color",
 	"leafColor"   : "Fijar color",
@@ -154,7 +162,7 @@
 	"leafFontName"    : "Fijar nombre de fuente",
 	"actionFontName"  : "Fijar nombre de fuente ...",
 	
-	"pathReflection" : "Visualización.Reflexión",
+	"pathProgrammatic" : "Visualización.Programático",
 	
 	"mnemonicSetColor" : "FijarColor",
 	"nameSetColor"     : "Fijar color",

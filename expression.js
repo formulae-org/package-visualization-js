@@ -185,13 +185,13 @@ Visualization.Rectangle = class extends Expression.NullaryExpression {
 			case "Height":             this.height       = value; return;
 			case "HorizontalBaseline": this.horzBaseline = value; return;
 			case "VerticalBaseline":   this.vertBaseline = value; return;
-			default: super.set(name. value);
+			default: super.set(name, value);
 		}
 	}
 	
 	get(name) {
 		switch (name) {
-			case "Widht":              return this.width;
+			case "Width":              return this.width;
 			case "Height":             return this.height;
 			case "HorizontalBaseline": return this.horzBaseline;
 			case "VerticalBaseline":   return this.vertBaseline;
@@ -199,6 +199,14 @@ Visualization.Rectangle = class extends Expression.NullaryExpression {
 		}
 	}
 	
+	// All four are mandatory, and the list must stay constant. Formulae.xmlElementToExpression
+	// (formulae/formulae.js) calls getSerializationNames() on a freshly created, still-empty expression and
+	// zips the result against getAttribute(name), so on the read path the list cannot depend on instance
+	// state — returning only [ "Width", "Height" ] for a centred rectangle would write a file that reloads
+	// with its baselines silently dropped, because getXMLElement calls the same method on the populated
+	// instance and would look correct. A genuinely optional attribute would need a sentinel value, not a
+	// shorter list. Centred baselines are therefore resolved before they are ever stored: by the edition
+	// dialog on Ok (edition.js), or by the two-argument CreateRectangle reducer (reduction.js).
 	getSerializationNames() {
 		return [ "Width",  "Height", "HorizontalBaseline", "VerticalBaseline"];
 	}
@@ -207,11 +215,42 @@ Visualization.Rectangle = class extends Expression.NullaryExpression {
 		return [ this.width.toString(), this.height.toString(), this.horzBaseline.toString(), this.vertBaseline.toString() ];
 	}
 	
+	// Enforces on the read path the same invariants the edition dialog and the CreateRectangle reducer
+	// enforce, so a hand-edited or truncated file cannot load a rectangle whose metrics are NaN — which would
+	// be invisible, since the expression draws nothing, yet would poison the layout of every ancestor.
+	// Throwing is deliberate: Formulae.xmlElementToExpression catches it and, in permissive mode, replaces
+	// the expression with a visible Error box carrying the message below (and rethrows when permisive=false).
 	setSerializationStrings(strings, promises) {
-		this.set("Width",              parseInt(strings[0]));
-		this.set("Height",             parseInt(strings[1]));
-		this.set("HorizontalBaseline", parseInt(strings[2]));
-		this.set("VerticalBaseline",   parseInt(strings[3]));
+		// A missing attribute arrives as null rather than as an absent entry, because the reader zips
+		// getSerializationNames() against getAttribute(), which returns null for whatever the file omits.
+		// Neither null nor "" may reach Number(): both convert to 0, which is a perfectly valid baseline,
+		// so a dropped attribute would masquerade as a deliberate zero.
+		let integer = (string, name) => {
+			if (string === null || string.trim() === "") throw "Rectangle: missing attribute " + name;
+			let value = Number(string);  // not parseInt, which silently truncates "3.7" to 3
+			if (!Number.isInteger(value)) throw "Rectangle: " + name + " is not an integer: " + string;
+			return value;
+		};
+		
+		let width = integer(strings[0], "Width");
+		if (width <= 0) throw "Rectangle: Width must be positive: " + width;
+		
+		let height = integer(strings[1], "Height");
+		if (height <= 0) throw "Rectangle: Height must be positive: " + height;
+		
+		// The horizontal baseline is a y offset, so it is bounded by the height; the vertical one is an x
+		// offset, bounded by the width
+		let horzBaseline = integer(strings[2], "HorizontalBaseline");
+		if (horzBaseline < 0 || horzBaseline > height) throw "Rectangle: HorizontalBaseline must be between 0 and the height (" + height + "): " + horzBaseline;
+		
+		let vertBaseline = integer(strings[3], "VerticalBaseline");
+		if (vertBaseline < 0 || vertBaseline > width) throw "Rectangle: VerticalBaseline must be between 0 and the width (" + width + "): " + vertBaseline;
+		
+		// Set only once everything has been validated, so a rejected rectangle is never left half-populated
+		this.set("Width",              width);
+		this.set("Height",             height);
+		this.set("HorizontalBaseline", horzBaseline);
+		this.set("VerticalBaseline",   vertBaseline);
 	}
 };
 
@@ -1104,9 +1143,22 @@ Visualization.setExpressions = function(module) {
 	
 	Formulae.setExpression(module, "Visualization.Infix", Visualization.Infix);
 	
+	// CreateRectangle takes either (width, height), whose baselines are then centred, or
+	// (width, height, horizontal baseline, vertical baseline). Three children are meaningless, and min/max
+	// cannot express "2 or 4" — min: 4, max: 5 previously accepted 4 or 5, neither of which was intended.
+	// canHaveChildren given here is copied onto the instance by Formulae.createExpression, so it shadows
+	// Expression.Function's own min/max implementation.
+	Formulae.setExpression(module, "Visualization.CreateRectangle", {
+		clazz:           Expression.Function,
+		getTag:          () => "Visualization.CreateRectangle",
+		getMnemonic:     () => Visualization.messages["mnemonicCreateRectangle"],
+		getName:         () => Visualization.messages["nameCreateRectangle"],
+		getChildName:    index => Visualization.messages["childrenCreateRectangle"][index],
+		canHaveChildren: count => count == 2 || count == 4
+	});
+	
 	// functions
 	[
-		[ "CreateRectangle",      4, 5 ],
 		[ "SetColor",             2, 2 ],
 		[ "SetBold",              1, 3 ],
 		[ "SetItalic",            1, 3 ],

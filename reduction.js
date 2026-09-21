@@ -33,16 +33,25 @@ Visualization.createRectangle = async (createRectangle, session) => {
 		throw new ReductionError();
 	}
 	
-	let horzBaseline = Arithmetic.getNativeInteger(createRectangle.children[2]);
-	if (horzBaseline === undefined || horzBaseline < 0 || horzBaseline > height) {
-		ReductionManager.setInError(createRectangle.children[2], "Invalid value");
-		throw new ReductionError();
-	}
+	let horzBaseline, vertBaseline;
 	
-	let vertBaseline = Arithmetic.getNativeInteger(createRectangle.children[3]);
-	if (vertBaseline === undefined || vertBaseline < 0 || vertBaseline > width) {
-		ReductionManager.setInError(createRectangle.children[3], "Invalid value");
-		throw new ReductionError();
+	if (createRectangle.children.length == 2) {
+		// Baselines omitted: centre them, the same default the edition dialog resolves for an empty field
+		horzBaseline = Math.round(height / 2);
+		vertBaseline = Math.round(width  / 2);
+	}
+	else {
+		horzBaseline = Arithmetic.getNativeInteger(createRectangle.children[2]);
+		if (horzBaseline === undefined || horzBaseline < 0 || horzBaseline > height) {
+			ReductionManager.setInError(createRectangle.children[2], "Invalid value");
+			throw new ReductionError();
+		}
+		
+		vertBaseline = Arithmetic.getNativeInteger(createRectangle.children[3]);
+		if (vertBaseline === undefined || vertBaseline < 0 || vertBaseline > width) {
+			ReductionManager.setInError(createRectangle.children[3], "Invalid value");
+			throw new ReductionError();
+		}
 	}
 	
 	let result = Formulae.createExpression("Visualization.Rectangle");

@@ -400,13 +400,152 @@ Visualization.actionInfix = {
 	}
 };
 
+// Rectangle holds its metrics as attributes, so they are prompted rather than composed from subexpressions.
+// Validation mirrors Visualization.createRectangle (reduction.js): width and height positive, each baseline
+// between 0 and the perpendicular dimension — the horizontal baseline is a y offset, so it is bounded by the
+// height, and the vertical baseline is an x offset, bounded by the width.
+// Either baseline field may be left empty, and the two are independent: an empty field is resolved on Ok to the
+// centre of its perpendicular dimension (horizontal → height / 2, vertical → width / 2), the same default the
+// two-argument Visualization.CreateRectangle applies. f therefore always receives four resolved values, so all
+// four serialized attributes stay mandatory — emptiness is an input convenience, never a stored state.
+// Shared by the edition (create) and the action (edit an existing one), like Formulae.Forms.integerInRangeSelection
+// is shared by editionFontSize/actionFontSize: it prompts for the four metrics and calls f with the validated values.
+Visualization.rectangleSelection = function(width, height, horzBaseline, vertBaseline, f) {
+	if (Visualization.rectangleForm === undefined) {
+		let labels = Visualization.messages["childrenCreateRectangle"];
+
+		let table = document.createElement("table");
+		table.classList.add("bordered");
+		table.innerHTML =
+`
+<tr><th colspan=2>${Visualization.messages["messageRectangle"]}
+<tr><td>${labels[0]}<td><input type="number" min=1/>
+<tr><td>${labels[1]}<td><input type="number" min=1/>
+<tr><td>${labels[2]}<td><input type="number" min=0 placeholder="${Visualization.messages["placeholderRectangleBaseline"]}"/>
+<tr><td>${labels[3]}<td><input type="number" min=0 placeholder="${Visualization.messages["placeholderRectangleBaseline"]}"/>
+<tr><th colspan=2><button type="button">Ok</button>
+`;
+
+		Visualization.rectangleForm = table;
+	}
+
+	let rows = Visualization.rectangleForm.rows;
+
+	let widthField        = rows[1].cells[1].firstChild;
+	let heightField       = rows[2].cells[1].firstChild;
+	let horzBaselineField = rows[3].cells[1].firstChild;
+	let vertBaselineField = rows[4].cells[1].firstChild;
+
+	widthField.value        = width;
+	heightField.value       = height;
+	horzBaselineField.value = horzBaseline;
+	vertBaselineField.value = vertBaseline;
+
+	rows[5].cells[0].firstChild.onclick = () => {
+		// Number() instead of parseInt(): parseInt("3.7") silently yields 3, accepting a non-integer
+		let newWidth = Number(widthField.value);
+		if (!Number.isInteger(newWidth) || newWidth <= 0) {
+			alert(Visualization.messages["errorRectangleWidth"]);
+			return;
+		}
+
+		let newHeight = Number(heightField.value);
+		if (!Number.isInteger(newHeight) || newHeight <= 0) {
+			alert(Visualization.messages["errorRectangleHeight"]);
+			return;
+		}
+
+		// An empty baseline field means "calculate it for me": it is resolved here, on Ok, to the centre of its
+		// perpendicular dimension. The two fields are independent — one may be typed and the other left empty.
+		// The empty test must precede the numeric one, because Number("") is 0, a perfectly valid baseline.
+		let newHorzBaseline;
+		if (horzBaselineField.value.trim() === "") {
+			newHorzBaseline = Math.round(newHeight / 2);
+		}
+		else {
+			newHorzBaseline = Number(horzBaselineField.value);
+			if (!Number.isInteger(newHorzBaseline) || newHorzBaseline < 0 || newHorzBaseline > newHeight) {
+				alert(Visualization.messages["errorRectangleHorizontalBaseline"]);
+				return;
+			}
+		}
+
+		let newVertBaseline;
+		if (vertBaselineField.value.trim() === "") {
+			newVertBaseline = Math.round(newWidth / 2);
+		}
+		else {
+			newVertBaseline = Number(vertBaselineField.value);
+			if (!Number.isInteger(newVertBaseline) || newVertBaseline < 0 || newVertBaseline > newWidth) {
+				alert(Visualization.messages["errorRectangleVerticalBaseline"]);
+				return;
+			}
+		}
+
+		Formulae.modal.style.display = "none";
+		f(newWidth, newHeight, newHorzBaseline, newVertBaseline);
+	};
+
+	Formulae.modalContent.removeChild(Formulae.modalContent.childNodes[0]);
+	Formulae.modalContent.appendChild(Visualization.rectangleForm);
+
+	Formulae.modal.style.display = "block";
+	Formulae.modal.focus();
+
+	widthField.select();
+};
+
+Visualization.editionRectangle = function() {
+	Visualization.rectangleSelection(
+		// The baselines start empty rather than at 0: unless the user says otherwise, a new rectangle is centred
+		10, 10, "", "",
+		(width, height, horzBaseline, vertBaseline) => {
+			let newExpression = Formulae.createExpression("Visualization.Rectangle");
+			newExpression.set("Width",              width);
+			newExpression.set("Height",             height);
+			newExpression.set("HorizontalBaseline", horzBaseline);
+			newExpression.set("VerticalBaseline",   vertBaseline);
+
+			Formulae.sExpression.replaceBy(newExpression);
+
+			Formulae.sHandler.prepareDisplay();
+			Formulae.sHandler.display();
+			Formulae.setSelected(Formulae.sHandler, newExpression, false);
+		}
+	);
+};
+
+Visualization.actionRectangle = {
+	isAvailableNow: () => Formulae.sHandler.type != Formulae.ROW_OUTPUT,
+	getDescription: () => Visualization.messages["actionRectangle"],
+	doAction: () => {
+		Visualization.rectangleSelection(
+			Formulae.sExpression.get("Width"),
+			Formulae.sExpression.get("Height"),
+			Formulae.sExpression.get("HorizontalBaseline"),
+			Formulae.sExpression.get("VerticalBaseline"),
+			(width, height, horzBaseline, vertBaseline) => {
+				Formulae.sExpression.set("Width",              width);
+				Formulae.sExpression.set("Height",             height);
+				Formulae.sExpression.set("HorizontalBaseline", horzBaseline);
+				Formulae.sExpression.set("VerticalBaseline",   vertBaseline);
+
+				Formulae.sHandler.prepareDisplay();
+				Formulae.sHandler.display();
+				Formulae.setSelected(Formulae.sHandler, Formulae.sExpression, false);
+			}
+		);
+	}
+};
+
 Visualization.setEditions = function() {
 	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "CrossedOut", "Metrics" ]);
 
 	// Invisible renders with no visible difference from (literally nothing of) its child, so no icon can preview it
 	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafInvisible"], Visualization.messages["leafInvisible"], () => Expression.wrapperEdition("Visualization.Invisible"));
 
-	Formulae.addEdition(Visualization.messages["pathVisualization"], Formulae.icon("Visualization.CreateRectangle", 4), Visualization.messages["leafCreateRectangle"], () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
+	// Rectangle is invisible, so no icon can render it; its edition shows the plain label and prompts for the metrics
+	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafRectangle"], Visualization.messages["leafRectangle"], Visualization.editionRectangle);
 
 	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "Selected", "Parentheses" ]);
 
@@ -499,14 +638,24 @@ Visualization.setEditions = function() {
 	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafCodeBlock"],         Visualization.messages["leafCodeBlock"],         Visualization.editionCodeBlock);
 
 	// SetColor/SetFontSize/SetFontSizeIncrement/SetFontName: selection belongs in the "Expression" (target) slot, not the "value" slot — bugfix, see DONE.md
-	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetColor", "Visualization.SetColor");
-	Formulae.addWrapperEditions(Visualization.messages, "Reflection", "Visualization", [ "SetBold", "SetItalic" ]);
-	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetFontSize",          "Visualization.SetFontSize");
-	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetFontSizeIncrement", "Visualization.SetFontSizeIncrement");
-	Formulae.addBinaryEdition(Visualization.messages, "Reflection", "SetFontName",          "Visualization.SetFontName");
+	Formulae.addBinaryEdition(Visualization.messages, "Programmatic", "SetColor", "Visualization.SetColor");
+	Formulae.addWrapperEditions(Visualization.messages, "Programmatic", "Visualization", [ "SetBold", "SetItalic" ]);
+	Formulae.addBinaryEdition(Visualization.messages, "Programmatic", "SetFontSize",          "Visualization.SetFontSize");
+	Formulae.addBinaryEdition(Visualization.messages, "Programmatic", "SetFontSizeIncrement", "Visualization.SetFontSizeIncrement");
+	Formulae.addBinaryEdition(Visualization.messages, "Programmatic", "SetFontName",          "Visualization.SetFontName");
+
+	// CreateRectangle accepts two children or four, and one form cannot be grown into the other (three children
+	// are rejected), so each arity needs its own entry. The tooltip spells out the signature the entry produces,
+	// assembled from the localized mnemonic and child names rather than from a pair of new message keys.
+	let createRectangleLeaf = n => Visualization.messages["mnemonicCreateRectangle"]
+		+ "(" + Visualization.messages["childrenCreateRectangle"].slice(0, n).join(", ") + ")";
+
+	Formulae.addEdition(Visualization.messages["pathProgrammatic"], Formulae.icon("Visualization.CreateRectangle", 2), createRectangleLeaf(2), () => Expression.multipleEdition("Visualization.CreateRectangle", 2, 0));
+	Formulae.addEdition(Visualization.messages["pathProgrammatic"], Formulae.icon("Visualization.CreateRectangle", 4), createRectangleLeaf(4), () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
 };
 
 Visualization.setActions = function() {
+	Formulae.addAction("Visualization.Rectangle",         Visualization.actionRectangle);
 	Formulae.addAction("Visualization.Color",             Visualization.actionColor);
 	Formulae.addAction("Visualization.Bold",              Visualization.actionBold);
 	Formulae.addAction("Visualization.Italic",            Visualization.actionItalic);

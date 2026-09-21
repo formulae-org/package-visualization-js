@@ -39,11 +39,19 @@
 	"leafHorizontalBaselineAtBottom"  : "Horizontal baseline at bottom",
 	
 	"nameRectangle" : "An invisible rectangle",
+	"leafRectangle" : "Rectangle",
+
+	"actionRectangle"                   : "Edit rectangle metrics ...",
+	"messageRectangle"                  : "Invisible rectangle",
+	"placeholderRectangleBaseline"      : "centered",
+	"errorRectangleWidth"               : "The width must be a positive integer",
+	"errorRectangleHeight"              : "The height must be a positive integer",
+	"errorRectangleHorizontalBaseline"  : "The horizontal baseline must be empty, or an integer between 0 and the height",
+	"errorRectangleVerticalBaseline"    : "The vertical baseline must be empty, or an integer between 0 and the width",
 
 	"mnemonicCreateRectangle" : "CreateRectangle",
 	"nameCreateRectangle"     : "Create rectangle",
 	"childrenCreateRectangle" : [ "Width", "Height", "Horizontal baseline", "Vertical baseline" ],
-	"leafCreateRectangle"     : "Create rectangle",
 	
 	"nameColor"   : "Color",
 	"leafColor"   : "Set color",
@@ -154,7 +162,7 @@
 	"leafFontName"    : "Set font name",
 	"actionFontName"  : "Set font name ...",
 	
-	"pathReflection" : "Visualization.Reflection",
+	"pathProgrammatic" : "Visualization.Programmatic",
 	
 	"mnemonicSetColor" : "SetColor",
 	"nameSetColor"     : "Set color",
