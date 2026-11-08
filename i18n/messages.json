@@ -38,11 +38,13 @@
 	"childHorizontalBaselineAtBottom" : "Expression whose horizontal baseline is placed at its bottom edge",
 	"leafHorizontalBaselineAtBottom"  : "Horizontal baseline at bottom",
 	
-	"nameRectangle" : "An invisible rectangle",
+	"nameRectangle" : "A rectangle with explicit metrics",
 	"leafRectangle" : "Rectangle",
 
-	"actionRectangle"                   : "Edit rectangle metrics ...",
-	"messageRectangle"                  : "Invisible rectangle",
+	"actionRectangle"                   : "Edit rectangle ...",
+	"messageRectangle"                  : "Rectangle",
+	"labelRectangleShowBorder"          : "Show border",
+	"labelRectangleShowBaselines"       : "Show baselines",
 	"placeholderRectangleBaseline"      : "centered",
 	"errorRectangleWidth"               : "The width must be a positive integer",
 	"errorRectangleHeight"              : "The height must be a positive integer",
@@ -51,7 +53,7 @@
 
 	"mnemonicCreateRectangle" : "CreateRectangle",
 	"nameCreateRectangle"     : "Create rectangle",
-	"childrenCreateRectangle" : [ "Width", "Height", "Horizontal baseline", "Vertical baseline" ],
+	"childrenCreateRectangle" : [ "Width", "Height", "Horizontal baseline", "Vertical baseline", "Options" ],
 	
 	"nameColor"   : "Color",
 	"leafColor"   : "Set color",

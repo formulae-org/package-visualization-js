@@ -175,7 +175,56 @@ Visualization.HorizontalBaselineAtTop    = horizontalBaselineAt("Top",    height
 Visualization.HorizontalBaselineAtMiddle = horizontalBaselineAt("Middle", height => Math.round(height / 2));
 Visualization.HorizontalBaselineAtBottom = horizontalBaselineAt("Bottom", height => height);
 
+// Four shapes, on four distinct and contiguous arities:
+//     CreateRectangle(w, h)                      CreateRectangle(w, h, options)
+//     CreateRectangle(w, h, hbl, vbl)            CreateRectangle(w, h, hbl, vbl, options)
+// Because 2..5 is contiguous, min/max express it exactly and no canHaveChildren override is needed — and a
+// user can grow one form into the next a child at a time, which "2 or 4" made impossible. A full class
+// rather than a spec object, because getChildName now depends on the arity: a spec object's properties are
+// copied onto the instance, so an arrow function there would capture module scope and lose `this`.
+Visualization.CreateRectangle = class extends Expression.Function {
+	constructor() {
+		super();
+		this.min = 2;
+		this.max = 5;
+	}
+	
+	getTag()      { return "Visualization.CreateRectangle"; }
+	getMnemonic() { return Visualization.messages["mnemonicCreateRectangle"]; }
+	getName()     { return Visualization.messages["nameCreateRectangle"]; }
+	
+	// Index 2 is the horizontal baseline in the four- and five-child forms but the options in the
+	// three-child one; same shape as Math.Arithmetic.Summation, which switches on this.children.length.
+	getChildName(index) {
+		let names = Visualization.messages["childrenCreateRectangle"];
+		switch (index) {
+			case 0:
+			case 1: return names[index];
+			case 2: return this.children.length == 3 ? names[4] : names[2];
+			case 3: return names[3];
+			case 4: return names[4];
+		}
+	}
+};
+
+// What a MISSING flag attribute means, which is not the same question as what an unspecified flag means at
+// creation time. A file written before these two attributes existed reloads looking exactly as it was
+// authored — a rectangle used as an invisible strut stays invisible — so both default to false here.
+// A rectangle being *created* instead starts with its border on, so that what you just made is visible;
+// those creation defaults live in the edition dialog (edition.js) and in RectangleOptions (reduction.js),
+// which are separate modules exporting their own Visualization class and so cannot share these constants.
+Visualization.SHOW_BORDER_WHEN_ABSENT    = false;
+Visualization.SHOW_BASELINES_WHEN_ABSENT = false;
+
 Visualization.Rectangle = class extends Expression.NullaryExpression {
+	constructor() {
+		super();
+		// So that a rectangle built programmatically, without the flags ever being set, behaves like one
+		// read from a file that does not carry them, instead of leaving showBorder undefined
+		this.showBorder    = Visualization.SHOW_BORDER_WHEN_ABSENT;
+		this.showBaselines = Visualization.SHOW_BASELINES_WHEN_ABSENT;
+	}
+	
 	getTag() { return "Visualization.Rectangle"; }
 	getName() { return Visualization.messages["nameRectangle"]; }
 	
@@ -185,6 +234,8 @@ Visualization.Rectangle = class extends Expression.NullaryExpression {
 			case "Height":             this.height       = value; return;
 			case "HorizontalBaseline": this.horzBaseline = value; return;
 			case "VerticalBaseline":   this.vertBaseline = value; return;
+			case "ShowBorder":         this.showBorder    = value; return;
+			case "ShowBaselines":      this.showBaselines = value; return;
 			default: super.set(name, value);
 		}
 	}
@@ -195,24 +246,40 @@ Visualization.Rectangle = class extends Expression.NullaryExpression {
 			case "Height":             return this.height;
 			case "HorizontalBaseline": return this.horzBaseline;
 			case "VerticalBaseline":   return this.vertBaseline;
+			case "ShowBorder":         return this.showBorder;
+			case "ShowBaselines":      return this.showBaselines;
 			default: return super.get(name);
 		}
 	}
 	
-	// All four are mandatory, and the list must stay constant. Formulae.xmlElementToExpression
-	// (formulae/formulae.js) calls getSerializationNames() on a freshly created, still-empty expression and
-	// zips the result against getAttribute(name), so on the read path the list cannot depend on instance
-	// state — returning only [ "Width", "Height" ] for a centred rectangle would write a file that reloads
-	// with its baselines silently dropped, because getXMLElement calls the same method on the populated
-	// instance and would look correct. A genuinely optional attribute would need a sentinel value, not a
-	// shorter list. Centred baselines are therefore resolved before they are ever stored: by the edition
-	// dialog on Ok (edition.js), or by the two-argument CreateRectangle reducer (reduction.js).
+	// The list must stay constant. Formulae.xmlElementToExpression (formulae/formulae.js) calls
+	// getSerializationNames() on a freshly created, still-empty expression and zips the result against
+	// getAttribute(name), so on the read path the list cannot depend on instance state — returning only
+	// [ "Width", "Height" ] for a centred rectangle would write a file that reloads with its baselines
+	// silently dropped, because getXMLElement calls the same method on the populated instance and would
+	// look correct. Shortening the list is never the way to make an attribute optional.
+	//
+	// The six therefore split by how a MISSING value is treated, not by whether they are listed:
+	//   - the four metrics are mandatory. A file without one is corrupt, and setSerializationStrings throws.
+	//     Centred baselines are resolved long before they are stored — by the edition dialog on Ok
+	//     (edition.js) or by the baseline-less CreateRectangle forms (reduction.js) — so "centred" never
+	//     reaches the file as an absence.
+	//   - the two flags are optional, with null as their sentinel, because they were added after the
+	//     expression shipped: a file that predates them is not corrupt, it is old, and it gets the
+	//     SHOW_*_WHEN_ABSENT defaults above.
+	// Do not harmonize the two halves; they answer different questions.
 	getSerializationNames() {
-		return [ "Width",  "Height", "HorizontalBaseline", "VerticalBaseline"];
+		return [ "Width",  "Height", "HorizontalBaseline", "VerticalBaseline", "ShowBorder", "ShowBaselines" ];
 	}
 	
+	// All six are always written, so a file saved once carries the flags explicitly from then on and stops
+	// depending on the defaults above. "True"/"False" follows Calculus.Integral.DefiniteIntegralOverDomain,
+	// the existing boolean-attribute precedent.
 	async getSerializationStrings() {
-		return [ this.width.toString(), this.height.toString(), this.horzBaseline.toString(), this.vertBaseline.toString() ];
+		return [
+			this.width.toString(), this.height.toString(), this.horzBaseline.toString(), this.vertBaseline.toString(),
+			this.showBorder ? "True" : "False", this.showBaselines ? "True" : "False"
+		];
 	}
 	
 	// Enforces on the read path the same invariants the edition dialog and the CreateRectangle reducer
@@ -246,11 +313,64 @@ Visualization.Rectangle = class extends Expression.NullaryExpression {
 		let vertBaseline = integer(strings[3], "VerticalBaseline");
 		if (vertBaseline < 0 || vertBaseline > width) throw "Rectangle: VerticalBaseline must be between 0 and the width (" + width + "): " + vertBaseline;
 		
+		// The two flags are the one part of this expression where an absent attribute is legitimate rather
+		// than corrupt: it means the file predates them. Only absence falls back to the default, though —
+		// DefiniteIntegralOverDomain reads its flag as `=== "True"`, which quietly turns every misspelling
+		// into false, and a misspelling here is a defect worth seeing.
+		let flag = (string, name, whenAbsent) => {
+			if (string === null || string.trim() === "") return whenAbsent;
+			if (string === "True")  return true;
+			if (string === "False") return false;
+			throw "Rectangle: " + name + " must be True or False: " + string;
+		};
+		
+		let showBorder    = flag(strings[4], "ShowBorder",    Visualization.SHOW_BORDER_WHEN_ABSENT);
+		let showBaselines = flag(strings[5], "ShowBaselines", Visualization.SHOW_BASELINES_WHEN_ABSENT);
+		
 		// Set only once everything has been validated, so a rejected rectangle is never left half-populated
 		this.set("Width",              width);
 		this.set("Height",             height);
 		this.set("HorizontalBaseline", horzBaseline);
 		this.set("VerticalBaseline",   vertBaseline);
+		this.set("ShowBorder",         showBorder);
+		this.set("ShowBaselines",      showBaselines);
+	}
+	
+	// prepareDisplay stays the inherited no-op: the metrics are attributes, not something to measure.
+	display(context, x, y) {
+		if (!this.showBorder && !this.showBaselines) return;
+		
+		let bkpStrokeStyle = context.strokeStyle;
+		let bkpLineWidth   = context.lineWidth;
+		context.lineWidth = 1;
+		
+		if (this.showBorder) {
+			context.strokeStyle = "#000000";
+			context.strokeRect(x + 0.5, y + 0.5, this.width - 1, this.height - 1);
+		}
+		
+		if (this.showBaselines) {
+			// The same grey as Visualization.Metrics, so both read as the same kind of layout annotation.
+			// Metrics has 5 px of padding and can draw its baselines as stubs in that margin; a rectangle has
+			// none, so they span it instead, crossing at (VerticalBaseline, HorizontalBaseline).
+			context.strokeStyle = "#7f7f7f";
+			
+			// Same half-pixel offset as the border, for the same reason. A baseline may sit at exactly the
+			// height or the width, though, and the last paintable row is height - 1: without the clamp such a
+			// baseline would be stroked outside the rectangle's own bounds. Clamped, a baseline of 0 lands on
+			// the top (or left) row and one of Height on the bottom row, coinciding with the border — which
+			// is geometrically what those two values mean.
+			let hb = Math.min(this.horzBaseline, this.height - 1) + 0.5;
+			let vb = Math.min(this.vertBaseline, this.width  - 1) + 0.5;
+			
+			context.beginPath();
+			context.moveTo(x,      y + hb); context.lineTo(x + this.width, y + hb            ); // preventing obfuscation
+			context.moveTo(x + vb, y     ); context.lineTo(x + vb,         y + this.height   ); // preventing obfuscation
+			context.stroke();
+		}
+		
+		context.strokeStyle = bkpStrokeStyle;
+		context.lineWidth   = bkpLineWidth;
 	}
 };
 
@@ -1143,19 +1263,7 @@ Visualization.setExpressions = function(module) {
 	
 	Formulae.setExpression(module, "Visualization.Infix", Visualization.Infix);
 	
-	// CreateRectangle takes either (width, height), whose baselines are then centred, or
-	// (width, height, horizontal baseline, vertical baseline). Three children are meaningless, and min/max
-	// cannot express "2 or 4" — min: 4, max: 5 previously accepted 4 or 5, neither of which was intended.
-	// canHaveChildren given here is copied onto the instance by Formulae.createExpression, so it shadows
-	// Expression.Function's own min/max implementation.
-	Formulae.setExpression(module, "Visualization.CreateRectangle", {
-		clazz:           Expression.Function,
-		getTag:          () => "Visualization.CreateRectangle",
-		getMnemonic:     () => Visualization.messages["mnemonicCreateRectangle"],
-		getName:         () => Visualization.messages["nameCreateRectangle"],
-		getChildName:    index => Visualization.messages["childrenCreateRectangle"][index],
-		canHaveChildren: count => count == 2 || count == 4
-	});
+	Formulae.setExpression(module, "Visualization.CreateRectangle", Visualization.CreateRectangle);
 	
 	// functions
 	[

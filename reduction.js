@@ -20,7 +20,52 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 export class Visualization extends Formulae.Package {}
 
+// Creation defaults, which are deliberately not the defaults applied to a file that lacks the attributes
+// (see Visualization.SHOW_BORDER_WHEN_ABSENT in expression.js): a rectangle you have just built should be
+// visible, while a rectangle authored before the flags existed should keep looking the way it was authored.
+// The edition dialog in edition.js starts from the same pair.
+Visualization.RectangleOptions = class extends CanonicalOptions {
+	constructor() {
+		super();
+		this.showBorder    = true;
+		this.showBaselines = false;
+	}
+	
+	checkOption(expression, option) {
+		let name = option.children[0].get("Value").toLowerCase();
+		let value = option.children[1];
+		
+		switch (name) {
+			case "show border":
+			case "show baselines": {
+				let tag = value.getTag();
+				if (tag !== "Logic.True" && tag !== "Logic.False") {
+					ReductionManager.setInError(value, "Value is not a boolean");
+					return false;
+				}
+				
+				if (name === "show border") {
+					this.showBorder = tag === "Logic.True";
+				}
+				else {
+					this.showBaselines = tag === "Logic.True";
+				}
+				return true;
+			}
+		}
+		
+		ReductionManager.setInError(option.children[0], "Unknown option");
+		return false;
+	}
+};
+
 Visualization.createRectangle = async (createRectangle, session) => {
+	// 2 and 4 children carry no options; 3 and 5 end with them. Every arity is unambiguous, so the options
+	// expression is simply whatever sits past the positional arguments.
+	let n = createRectangle.children.length;
+	let options = new Visualization.RectangleOptions();
+	options.checkOptions(createRectangle, n == 3 ? createRectangle.children[2] : (n == 5 ? createRectangle.children[4] : undefined));
+	
 	let width = Arithmetic.getNativeInteger(createRectangle.children[0]);
 	if (width === undefined || width <= 0) {
 		ReductionManager.setInError(createRectangle.children[0], "Invalid value");
@@ -35,7 +80,7 @@ Visualization.createRectangle = async (createRectangle, session) => {
 	
 	let horzBaseline, vertBaseline;
 	
-	if (createRectangle.children.length == 2) {
+	if (n <= 3) {
 		// Baselines omitted: centre them, the same default the edition dialog resolves for an empty field
 		horzBaseline = Math.round(height / 2);
 		vertBaseline = Math.round(width  / 2);
@@ -59,6 +104,8 @@ Visualization.createRectangle = async (createRectangle, session) => {
 	result.set("Height",             height);
 	result.set("HorizontalBaseline", horzBaseline);
 	result.set("VerticalBaseline",   vertBaseline);
+	result.set("ShowBorder",         options.showBorder);
+	result.set("ShowBaselines",      options.showBaselines);
 	
 	createRectangle.replaceBy(result);
 	return true;

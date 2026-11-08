@@ -410,7 +410,7 @@ Visualization.actionInfix = {
 // four serialized attributes stay mandatory — emptiness is an input convenience, never a stored state.
 // Shared by the edition (create) and the action (edit an existing one), like Formulae.Forms.integerInRangeSelection
 // is shared by editionFontSize/actionFontSize: it prompts for the four metrics and calls f with the validated values.
-Visualization.rectangleSelection = function(width, height, horzBaseline, vertBaseline, f) {
+Visualization.rectangleSelection = function(width, height, horzBaseline, vertBaseline, showBorder, showBaselines, f) {
 	if (Visualization.rectangleForm === undefined) {
 		let labels = Visualization.messages["childrenCreateRectangle"];
 
@@ -423,6 +423,8 @@ Visualization.rectangleSelection = function(width, height, horzBaseline, vertBas
 <tr><td>${labels[1]}<td><input type="number" min=1/>
 <tr><td>${labels[2]}<td><input type="number" min=0 placeholder="${Visualization.messages["placeholderRectangleBaseline"]}"/>
 <tr><td>${labels[3]}<td><input type="number" min=0 placeholder="${Visualization.messages["placeholderRectangleBaseline"]}"/>
+<tr><td>${Visualization.messages["labelRectangleShowBorder"]}<td><input type="checkbox"/>
+<tr><td>${Visualization.messages["labelRectangleShowBaselines"]}<td><input type="checkbox"/>
 <tr><th colspan=2><button type="button">Ok</button>
 `;
 
@@ -436,12 +438,19 @@ Visualization.rectangleSelection = function(width, height, horzBaseline, vertBas
 	let horzBaselineField = rows[3].cells[1].firstChild;
 	let vertBaselineField = rows[4].cells[1].firstChild;
 
+	// Unlike the metrics, the two flags are booleans with no "unspecified" state: a checkbox is either set or
+	// it is not, so both always reach f and both attributes are always written.
+	let showBorderField    = rows[5].cells[1].firstChild;
+	let showBaselinesField = rows[6].cells[1].firstChild;
+
 	widthField.value        = width;
 	heightField.value       = height;
 	horzBaselineField.value = horzBaseline;
 	vertBaselineField.value = vertBaseline;
+	showBorderField.checked    = showBorder;
+	showBaselinesField.checked = showBaselines;
 
-	rows[5].cells[0].firstChild.onclick = () => {
+	rows[7].cells[0].firstChild.onclick = () => {
 		// Number() instead of parseInt(): parseInt("3.7") silently yields 3, accepting a non-integer
 		let newWidth = Number(widthField.value);
 		if (!Number.isInteger(newWidth) || newWidth <= 0) {
@@ -483,7 +492,7 @@ Visualization.rectangleSelection = function(width, height, horzBaseline, vertBas
 		}
 
 		Formulae.modal.style.display = "none";
-		f(newWidth, newHeight, newHorzBaseline, newVertBaseline);
+		f(newWidth, newHeight, newHorzBaseline, newVertBaseline, showBorderField.checked, showBaselinesField.checked);
 	};
 
 	Formulae.modalContent.removeChild(Formulae.modalContent.childNodes[0]);
@@ -497,14 +506,19 @@ Visualization.rectangleSelection = function(width, height, horzBaseline, vertBas
 
 Visualization.editionRectangle = function() {
 	Visualization.rectangleSelection(
-		// The baselines start empty rather than at 0: unless the user says otherwise, a new rectangle is centred
-		10, 10, "", "",
-		(width, height, horzBaseline, vertBaseline) => {
+		// The baselines start empty rather than at 0: unless the user says otherwise, a new rectangle is centred.
+		// The border starts on for the same reason RectangleOptions defaults it on (reduction.js): a rectangle
+		// you have just created should be visible. That is not the default applied to a file whose attributes
+		// are missing — see Visualization.SHOW_BORDER_WHEN_ABSENT in expression.js.
+		10, 10, "", "", true, false,
+		(width, height, horzBaseline, vertBaseline, showBorder, showBaselines) => {
 			let newExpression = Formulae.createExpression("Visualization.Rectangle");
 			newExpression.set("Width",              width);
 			newExpression.set("Height",             height);
 			newExpression.set("HorizontalBaseline", horzBaseline);
 			newExpression.set("VerticalBaseline",   vertBaseline);
+			newExpression.set("ShowBorder",         showBorder);
+			newExpression.set("ShowBaselines",      showBaselines);
 
 			Formulae.sExpression.replaceBy(newExpression);
 
@@ -524,11 +538,15 @@ Visualization.actionRectangle = {
 			Formulae.sExpression.get("Height"),
 			Formulae.sExpression.get("HorizontalBaseline"),
 			Formulae.sExpression.get("VerticalBaseline"),
-			(width, height, horzBaseline, vertBaseline) => {
+			Formulae.sExpression.get("ShowBorder"),
+			Formulae.sExpression.get("ShowBaselines"),
+			(width, height, horzBaseline, vertBaseline, showBorder, showBaselines) => {
 				Formulae.sExpression.set("Width",              width);
 				Formulae.sExpression.set("Height",             height);
 				Formulae.sExpression.set("HorizontalBaseline", horzBaseline);
 				Formulae.sExpression.set("VerticalBaseline",   vertBaseline);
+				Formulae.sExpression.set("ShowBorder",         showBorder);
+				Formulae.sExpression.set("ShowBaselines",      showBaselines);
 
 				Formulae.sHandler.prepareDisplay();
 				Formulae.sHandler.display();
@@ -544,7 +562,8 @@ Visualization.setEditions = function() {
 	// Invisible renders with no visible difference from (literally nothing of) its child, so no icon can preview it
 	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafInvisible"], Visualization.messages["leafInvisible"], () => Expression.wrapperEdition("Visualization.Invisible"));
 
-	// Rectangle is invisible, so no icon can render it; its edition shows the plain label and prompts for the metrics
+	// A rectangle only draws anything once its border or its baselines are switched on, and an edition icon
+	// cannot carry the attributes that decide it, so this entry shows the plain label and prompts instead
 	Formulae.addEdition(Visualization.messages["pathVisualization"], Visualization.messages["leafRectangle"], Visualization.messages["leafRectangle"], Visualization.editionRectangle);
 
 	Formulae.addWrapperEditions(Visualization.messages, "Visualization", "Visualization", [ "Selected", "Parentheses" ]);
@@ -644,14 +663,23 @@ Visualization.setEditions = function() {
 	Formulae.addBinaryEdition(Visualization.messages, "Programmatic", "SetFontSizeIncrement", "Visualization.SetFontSizeIncrement");
 	Formulae.addBinaryEdition(Visualization.messages, "Programmatic", "SetFontName",          "Visualization.SetFontName");
 
-	// CreateRectangle accepts two children or four, and one form cannot be grown into the other (three children
-	// are rejected), so each arity needs its own entry. The tooltip spells out the signature the entry produces,
-	// assembled from the localized mnemonic and child names rather than from a pair of new message keys.
-	let createRectangleLeaf = n => Visualization.messages["mnemonicCreateRectangle"]
-		+ "(" + Visualization.messages["childrenCreateRectangle"].slice(0, n).join(", ") + ")";
-
-	Formulae.addEdition(Visualization.messages["pathProgrammatic"], Formulae.icon("Visualization.CreateRectangle", 2), createRectangleLeaf(2), () => Expression.multipleEdition("Visualization.CreateRectangle", 2, 0));
-	Formulae.addEdition(Visualization.messages["pathProgrammatic"], Formulae.icon("Visualization.CreateRectangle", 4), createRectangleLeaf(4), () => Expression.multipleEdition("Visualization.CreateRectangle", 4, 0));
+	// CreateRectangle has four forms across a contiguous 2..5 children, so no fixed set of entries could
+	// enumerate them. One entry instead: it creates the bare two-child form, and the trailing ⋯ says the rest
+	// are reachable from there with <INSERT> — which canInsertChildAt allows exactly up to five, and
+	// canRemoveChildAt allows back down to two. Formulae.icon cannot build this preview, since it fills every
+	// slot past the first with Null, so the XML is written out; the same technique as the List "create vector"
+	// entry, which renders as {x, x, ⋯, x}.
+	Formulae.addEdition(
+		Visualization.messages["pathProgrammatic"],
+		'<expression tag="Visualization.CreateRectangle">'
+			+ '<expression tag="Visualization.Selected"><expression tag="Null"/></expression>'
+			+ '<expression tag="Null"/>'
+			+ '<expression tag="Visualization.HorizontalEllipsis"/>'
+		+ '</expression>',
+		Visualization.messages["mnemonicCreateRectangle"]
+			+ "(" + Visualization.messages["childrenCreateRectangle"].slice(0, 2).join(", ") + ", ⋯)",
+		() => Expression.multipleEdition("Visualization.CreateRectangle", 2, 0)
+	);
 };
 
 Visualization.setActions = function() {
